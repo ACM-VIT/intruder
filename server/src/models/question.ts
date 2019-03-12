@@ -2,16 +2,24 @@ import { Schema, model as Model } from 'mongoose';
 import { garbageString } from '../utils/garbage';
 
 const question: Schema = new Schema({
-  id: {
+  number: {
     type: Schema.Types.Number,
     required: true,
   },
   content: {
-    type: Schema.Types.Embedded,
+    type: Object,
     required: true,
   },
   category: {
     type: Schema.Types.String,
+    required: true,
+  },
+  solution: {
+    type: Schema.Types.Mixed,
+    required: true,
+  },
+  score: {
+    type: Schema.Types.Number,
     required: true,
   },
   attempts: {
@@ -19,7 +27,7 @@ const question: Schema = new Schema({
     default: garbageString(),
   },
   successfulAttempt: {
-    type: Schema.Types.Embedded,
+    type: Object,
     default: {},
   },
 });
