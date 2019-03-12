@@ -7,6 +7,8 @@ import * as mongoose from 'mongoose';
 
 import env from './env';
 
+import UserRouter from './controllers/user';
+
 env();
 const app = Express();
 const server = http.createServer(app);
@@ -15,9 +17,13 @@ const io = socketIO(server);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use('/', UserRouter);
+
 process.on('uncaughtException', (err: Error) => {
   process.stderr.write(`${err.toString()}\n`);
 });
+
+(mongoose as any).Promise = global.Promise;
 
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true }, (err: Error) => {
   if (err) {
