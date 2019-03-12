@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server-lint": "./node_modules/.bin/eslint --ext ts .",
+    "server-build": "./node_modules/.bin/tsc --build server/tsconfig.json --force",
+    "server-lift": "node server/build/app.js"
   },
   "repository": {
     "type": "git",
@@ -17,11 +20,16 @@
   },
   "homepage": "https://github.com/ACM-VIT/intruder#readme",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^1.4.2",
+    "@typescript-eslint/parser": "^1.4.2",
     "eslint": "^5.15.1",
     "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-typescript": "^2.0.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx": "0.0.2",
     "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.12.4"
+    "eslint-plugin-react": "^7.12.4",
+    "typescript": "^3.3.3333"
   }
 }
