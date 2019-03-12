@@ -9,6 +9,7 @@
     },
     "rules": {
         "import/no-unresolved": "off",
-        "@typescript-eslint/indent": ["error", 2]
+        "@typescript-eslint/indent": ["error", 2],
+        "import/prefer-default-export": "off"
     }
 }

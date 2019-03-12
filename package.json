@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server-lint": "./node_modules/.bin/eslint --ext ts .",
+    "server-lint-fix": "./node_modules/.bin/eslint --ext ts . --fix",
     "server-build": "./node_modules/.bin/tsc --build server/tsconfig.json --force",
     "server-lift": "node server/build/app.js"
   },
