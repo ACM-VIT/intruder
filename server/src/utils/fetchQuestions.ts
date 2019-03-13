@@ -9,15 +9,23 @@ interface Attempt {
 
 class Question {
   private static num: number = 0;
-  error: string = null;
-  content: any = {};
-  number: number = -1;
-  attempts: Array<Attempt> = [];
-  successfulAttempt: Attempt = null;
-  solution: any = null;
-  score: number = -1;
-  constructor(cb: (b: boolean) => void) {
-    QuestionModel.findOne({ number: Question.num + <number>1 }).then((que: any) => {
+
+  public error: string = null;
+
+  public content: any = {};
+
+  public number: number = -1;
+
+  public attempts: Attempt[] = [];
+
+  public successfulAttempt: Attempt = null;
+
+  public solution: any = null;
+
+  public score: number = -1;
+
+  public constructor(cb: (b: boolean) => void) {
+    QuestionModel.findOne({ number: Question.num + 1 as number }).then((que: any) => {
       this.content = que.content;
       this.number = que.number;
       this.solution = que.solution;
@@ -28,8 +36,9 @@ class Question {
       cb(false);
     });
     Question.num += 1;
-  };
-  checkSolution(attempt: Attempt, cb) {
+  }
+
+  public checkSolution(attempt: Attempt, cb) {
     if (attempt.solution === this.solution) {
       process.stdout.write(`${attempt.username} intruded by answering Question: ${this.number}\n`);
       cb(true);
@@ -62,25 +71,25 @@ class Question {
   }
 }
 
-const fetchedQuestions: Array<Question> = [];
+const fetchedQuestions: Question[] = [];
 
 function fetch(notify: () => void): void {
   let totalCount: number = -1;
-  let count: number = 0;
+  let count = 0;
   const cb = (bool: boolean): void => {
     if (!bool) {
-      process.stderr.write(`Error fetching question\n`);
+      process.stderr.write('Error fetching question\n');
       process.exit(1);
     }
     count += 1;
     if (count === totalCount) {
       notify();
     }
-  }
+  };
   QuestionModel.countDocuments({}).then((data) => {
     totalCount = data;
     for (let i = 0; i < data; i += 1) {
-      let que = new Question(cb);
+      const que = new Question(cb);
       fetchedQuestions.push(que);
     }
   }).catch((err) => {

@@ -1,8 +1,8 @@
 import { io } from '../app';
 import { fetch, fetchedQuestions } from '../utils/fetchQuestions';
 
-let adminLock: boolean = true;
-let adminId: String = null;
+let adminLock = true;
+let adminId: string = null;
 
 io.on('connection', (socket) => {
   socket.on('adminLogin', (password, cb): void => {
@@ -27,5 +27,6 @@ io.on('connection', (socket) => {
       process.stdout.write('Admin LoggedOut\n\n');
       return null;
     }
+    return null;
   });
 });
