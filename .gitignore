@@ -3,3 +3,8 @@ server/node_modules/
 client/node_modules
 server/build
 server/src/env.ts
+
+client/build
+
+yarn-debug.log*
+yarn-error.log*
