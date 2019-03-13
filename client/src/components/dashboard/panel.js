@@ -13,9 +13,9 @@ class App extends React.Component {
         return (
             <div id="panel">
                 <div style={{marginTop:60,height:'calc(100vh - 60px)',overflow: 'auto'}}>
-                    <Card style={{margin:50, background:'#454545', color:'#fff'}}>
+                    <Card style={{margin:40, background:'#454545', color:'#fff'}}>
                     <CardContent>
-                        <Typography gutterBottom style={{textAlign:'left',color:'#31e7b6'}}>
+                        <Typography gutterBottom style={{textAlign:'left',color:'#31e7b6',fontWeight:'bold',}}>
                             Question
                         </Typography>
                         <CardActions>
@@ -28,16 +28,16 @@ class App extends React.Component {
                     </CardContent>
                     </Card>
                     <div style={{}}>
-                        <Card style={{display:'block', margin:50 ,background:'#454545', color:'#fff'}}>
-                        <CardContent style={{textAlign:'left'}}>
-                            <Typography color="textSecondary" gutterBottom style={{color:'#31e7b6'}}>
+                        <Card style={{display:'block', margin:40 ,background:'#454545', color:'#fff'}}>
+                        <CardContent style={{textAlign:'left',position:'relative'}}>
+                            <Typography color="textSecondary" gutterBottom style={{position:'absolute' ,color:'#31e7b6',fontWeight:'bold'}}>
                                 Answer
                             </Typography>
-                            <div style={{margin: '10px 40px', border:'1px solid #31e7b6', overflow:'auto'}}>
+                            <div style={{margin: '40px', overflow:'auto'}}>
                                 <Editor />
                             </div>
-                            <CardActions>
-                                <Button variant="contained" style={{margin:'auto', backgroundColor:'#31e7b6', color:'#373d41'}} size="medium" color="primary">
+                            <CardActions style={{ position:'absolute', bottom: 0, padding: 14,left:0,width: '100%'}}>
+                                <Button variant="contained" style={{margin:'auto',backgroundColor:'#31e7b6', color:'#373d41'}} size="medium" color="primary">
                                     Submit
                                 </Button>
                             </CardActions>

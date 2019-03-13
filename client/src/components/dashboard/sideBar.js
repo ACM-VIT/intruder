@@ -5,7 +5,7 @@ import Hidden from '@material-ui/core/Hidden';
 import { withStyles } from '@material-ui/core/styles';
 import Bar from './bar'
 import Divider from '@material-ui/core/Divider';
-const drawerWidth = 270;
+const drawerWidth = 370;
 
 const styles = theme => ({
   root: {

@@ -1,13 +1,32 @@
 import React, { Component } from 'react';
-import Clock from './components/clock';
+import Clock from './components/home';
 import Dashboard from './components/dashboard/layout'
 import './App.css';
 import {HashRouter, Route, Switch } from 'react-router-dom'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';  
+
+const theme = createMuiTheme({
+  palette: {
+     primary: {
+        light: 'rgb(49, 231, 182)',
+        main: 'rgb(49, 231, 182)',
+        dark: 'rgb(49, 231, 182)'
+     },
+     secondary: {
+      light: 'rgb(49, 231, 182)',
+       main: 'rgb(49, 231, 182)',
+       dark: 'rgb(49, 231, 182)'
+     },
+  },
+  typography: { 
+     useNextVariants: true
+  }
+});
 
 class App extends Component {
   render() {
     return (
-      <div>
+      <MuiThemeProvider theme = { theme }>
         <HashRouter>
           <Switch>
             <Route path='/dashboard'>
@@ -18,7 +37,7 @@ class App extends Component {
             </Route>
           </Switch>
         </HashRouter>
-      </div>
+        </MuiThemeProvider>
       
     );
   }

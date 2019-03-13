@@ -1,28 +1,36 @@
 import React, { Component } from 'react';
-import Clock from './clock'
+import Timmer from './timmer'
+import Login from './login'
+var maskRight=require('../../resources/Asset_1.svg')
+var maskLeft=require('../../resources/Mask_Group_left.svg')
+
+var style = {
+  height: '100vh', width: '100vw',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column',
+  background:`url(${maskRight}) right bottom repeat`,
+  backgroundColor: '#303030',
+  // background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("https://i.imgur.com/xnh5x47.jpg");
+  // backgroundSize: '100px 80px'
+}
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
-    this.state={sec:20, done:false}
-  }
-  componentDidMount(){
-    var tiId=setInterval((e)=>{
-      this.setState({sec:this.state.sec-1/10})
-    },100)
-    setTimeout((e)=>{
-      clearInterval(tiId)
-      this.setState({done:true})
-    },this.state.sec*1000+100)
   }
   render() {
     return (
-      <div className="" style={{background:'#303030',height:'100vh', width:'100vw', display:'flex','justifyContent':'center',flexDirection: 'column'}}>
-        <div style={{display:'flex',flex:1}}></div>
-        <Clock sec={this.state.sec>0?this.state.sec:0} done={this.state.done}/>
-        <div style={{display:'flex',flex:1}}></div>
+      <div className="" style={style}>
+        <div style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{ fontSize: 70, fontWeight: 900, color: 'rgb(49, 231, 182)' }}>Intruder</div>
+        </div>
+        <Login />
+        {/* <Timmer/> */}
+        <div style={{ display: 'flex', flex: 1 }}></div>
       </div>
-    );
+    )
   }
 }
 

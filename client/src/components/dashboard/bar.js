@@ -10,7 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
-const drawerWidth = 270;
+const drawerWidth = 370;
 
 const styles = theme => ({
   grow: {
@@ -73,7 +73,7 @@ class ResponsiveDrawer extends React.Component {
 
           return (
             <div>
-            <AppBar style={{backgroundColor:'rgb(48, 48, 48)'}} position="fixed" className={classes.appBar}>
+            <AppBar style={{color:'#fff',backgroundColor:'rgb(48, 48, 48)'}} position="fixed" className={classes.appBar}>
               <Toolbar>
                 <IconButton
                   color="inherit"
