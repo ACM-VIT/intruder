@@ -62,7 +62,7 @@ class Question {
   }
 }
 
-const fetchedQuestion: Array<Question> = [];
+const fetchedQuestions: Array<Question> = [];
 
 function fetch(notify: () => void): void {
   let totalCount: number = -1;
@@ -81,7 +81,7 @@ function fetch(notify: () => void): void {
     totalCount = data;
     for (let i = 0; i < data; i += 1) {
       let que = new Question(cb);
-      fetchedQuestion.push(que);
+      fetchedQuestions.push(que);
     }
   }).catch((err) => {
     process.stderr.write(`Error counting questions: ${err.message}\n`);
@@ -89,4 +89,4 @@ function fetch(notify: () => void): void {
   });
 }
 
-export { fetch, fetchedQuestion };
+export { fetch, fetchedQuestions };
