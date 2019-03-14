@@ -1,5 +1,10 @@
 import { io } from '../app';
-import { fetch, QuestionGetter, Question } from '../utils/fetchQuestions';
+import {
+  fetch,
+  QuestionGetter,
+  Question,
+  Attempt,
+} from '../utils/fetchQuestions';
 import * as jwt from '../utils/jwt';
 
 interface Users {
@@ -12,10 +17,35 @@ let questionsFetched = false;
 let adminLock = true;
 let adminId: string = null;
 let initialized = false;
+let criticalState = false;
+let gotMessage = false;
 
 // State vars
 const users: Users = {};
+let prevScorer: string = null;
+let prevScorerSocket: string = null;
 let currentQuestion: Question = null;
+
+// Timers
+let successMessageTimer: any = null;
+
+// Set-Timer methods
+const setCriticalStateTimer = (): void => {
+  setTimeout(() => {
+    prevScorer = null;
+    prevScorerSocket = null;
+    criticalState = false;
+    gotMessage = false;
+  }, 3000);
+};
+const setSuccessMessageTimer = (): void => {
+  successMessageTimer = setTimeout(() => {
+    gotMessage = true;
+    io.emit('successMessage', { username: prevScorer, message: '' });
+    io.to(prevScorerSocket).emit('question', currentQuestion);
+    setCriticalStateTimer();
+  }, 7000);
+};
 
 const connectionFunc = (socket): void => {
   socket.on('adminLogin', (password, cb): void => {
@@ -44,11 +74,55 @@ const connectionFunc = (socket): void => {
     try {
       payload = jwt.verify(token);
       users[socket.id as string] = payload.username;
+      if (currentQuestion !== null && socket.connected
+        && (!criticalState || prevScorer === payload.username)) {
+        socket.emit('question', currentQuestion);
+      } else {
+        socket.emit('criticalState');
+      }
+      if (socket.connected && !gotMessage && (prevScorer === payload.username)) {
+        prevScorerSocket = socket.id;
+        socket.emit('messageRequired');
+      }
       cb(true);
     } catch (err) {
       cb(false);
       socket.disconnect();
     }
+  });
+  socket.on('submit', (solution): void => {
+    if (criticalState) {
+      return null;
+    }
+    const username: string = users[socket.id];
+    if (!username || !solution || typeof solution !== 'string') {
+      return null;
+    }
+    const attempt: Attempt = { username, solution };
+    currentQuestion.checkSolution(attempt, (bool: boolean): void => {
+      if (bool) {
+        criticalState = true;
+        prevScorerSocket = socket.id;
+        prevScorer = username;
+        currentQuestion = queGetter.get();
+        const finished = (currentQuestion === null);
+        io.emit('success', { username, finished });
+        setSuccessMessageTimer();
+      }
+    });
+    return null;
+  });
+  socket.on('successMessage', (message): void => {
+    if (users[socket.id] !== prevScorer) {
+      return null;
+    }
+    clearTimeout(successMessageTimer);
+    successMessageTimer = null;
+    gotMessage = true;
+    io.emit('successMessage', { username: prevScorer, message });
+    socket.emit('question', currentQuestion);
+    setCriticalStateTimer();
+    return null;
   });
   socket.on('disconnect', () => {
     if (socket.id === adminId) {
@@ -56,6 +130,7 @@ const connectionFunc = (socket): void => {
       process.stdout.write('Admin LoggedOut\n\n');
       return null;
     }
+    delete users[socket.id];
     return null;
   });
 };
