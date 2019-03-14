@@ -3,18 +3,18 @@ import { fetch, fetchedQuestions } from '../utils/fetchQuestions';
 import * as jwt from '../utils/jwt';
 
 interface Users {
-  [prop:string]: string;
+  [prop: string]: string;
 }
 
 // Configuration vars
 let adminLock = true;
 let adminId: string = null;
-let initialized: boolean = false;
+let initialized = false;
 
 // State vars
 const users: Users = {} as Users;
 
-const connectionFunc = (socket) => {
+const connectionFunc = (socket): void => {
   socket.on('adminLogin', (password, cb): void => {
     if (password === process.env.ADMIN_PASSWORD) {
       adminLock = true;
@@ -52,10 +52,10 @@ const connectionFunc = (socket) => {
     }
     return null;
   });
-}
+};
 
-const registerIO = () => {
+const registerIO = (): void => {
   io.on('connection', connectionFunc);
-}
+};
 
 export default registerIO;

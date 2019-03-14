@@ -10,10 +10,12 @@ import env from './env';
 import registerIO from './controllers/socket';
 import UserRouter from './controllers/user';
 
-env();
 const app = Express();
 const server = http.createServer(app);
 const io = socketIO(server);
+
+env();
+registerIO();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
