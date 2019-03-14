@@ -4,7 +4,6 @@ import QuestionModel from '../models/question';
 interface Attempt {
   username: string;
   solution: any;
-  correct: boolean;
 }
 
 class Question {
@@ -116,4 +115,4 @@ function fetch(notify: () => void): void {
   });
 }
 
-export { fetch, QuestionGetter, Question };
+export { fetch, QuestionGetter, Question, Attempt };
