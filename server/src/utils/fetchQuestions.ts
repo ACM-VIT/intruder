@@ -71,15 +71,15 @@ class Question {
 }
 
 class QuestionGetter {
-  private static readonly fetchedQuestions: Question[];
+  private static readonly fetchedQuestions: Question[] = [];
 
   private static curNum: number = -1;
 
-  public push(que: Question): void {
+  public static push(que: Question): void {
     QuestionGetter.fetchedQuestions.push(que);
   }
 
-  public get(): Question {
+  public static get(): Question {
     if (QuestionGetter.curNum < QuestionGetter.fetchedQuestions.length) {
       QuestionGetter.curNum += 1;
       return QuestionGetter.fetchedQuestions[QuestionGetter.curNum];
@@ -91,7 +91,6 @@ class QuestionGetter {
 function fetch(notify: () => void): void {
   let totalCount: number = -1;
   let count = -1;
-  const queStore: QuestionGetter = new QuestionGetter();
   const cb = (bool: boolean): void => {
     if (!bool) {
       process.stderr.write('Error fetching question\n');
@@ -107,7 +106,7 @@ function fetch(notify: () => void): void {
     cb(true);
     for (let i = 0; i < data; i += 1) {
       const que = new Question(cb);
-      queStore.push(que);
+      QuestionGetter.push(que);
     }
   }).catch((err) => {
     process.stderr.write(`Error counting questions: ${err.message}\n`);

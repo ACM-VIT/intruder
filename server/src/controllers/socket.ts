@@ -12,7 +12,6 @@ interface Users {
 }
 
 // Configuration vars
-const queGetter = new QuestionGetter();
 let questionsFetched = false;
 let adminLock = true;
 let adminId: string = null;
@@ -62,7 +61,7 @@ const connectionFunc = (socket): void => {
   });
   socket.on('emitQuestion', (cb): void => {
     if (questionsFetched && socket.id === adminId) {
-      currentQuestion = queGetter.get();
+      currentQuestion = QuestionGetter.get();
       io.emit('question', currentQuestion);
       initialized = true;
       cb(true);
@@ -104,7 +103,7 @@ const connectionFunc = (socket): void => {
         criticalState = true;
         prevScorerSocket = socket.id;
         prevScorer = username;
-        currentQuestion = queGetter.get();
+        currentQuestion = QuestionGetter.get();
         const finished = (currentQuestion === null);
         io.emit('success', { username, finished });
         setSuccessMessageTimer();
