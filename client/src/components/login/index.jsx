@@ -1,30 +1,25 @@
 import React, { Component } from 'react';
+import Login from './login'
 import {connect} from 'react-redux'
-import Timmer from './timmer'
-import Question from './question'
+import Background from '../background'
 
 class App extends Component {
   constructor(props) {
     super(props)
   }
 
-  renderElem(){
-    if(this.props.wait){
-      return <Timmer/>
-    }
-    return <Question/>
-  }
-
   render() {
-    return this.renderElem()
+    return (
+      <Background title="Intruder">
+        <Login />
+        </Background>
+    )
   }
 }
 
 
 function mapStateToProps(state){
-  return({
-    wait:state.waitState.wait
-  })
+  return({loginState:state.loginState})
 }
 
 export default connect(mapStateToProps)(App)

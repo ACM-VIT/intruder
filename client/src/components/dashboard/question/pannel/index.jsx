@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Editor from './editor'
 import Resources from './resources'
+import {connect} from 'react-redux'
 require('../style.css')
 
 class App extends React.Component {
@@ -19,11 +20,14 @@ class App extends React.Component {
                             Question
                         </Typography>
                         <Typography component="p" style={{color:'#fff',padding: '10px 40px'}}>
-                            Nulla ea adipisicing officia tempor ex deserunt elit sint irure tempor enim adipisicing minim id.
-                            Nulla ea adipisicing officia tempor ex deserunt elit sint irure tempor enim adipisicing minim id.
-                            Nulla ea adipisicing officia tempor ex deserunt elit sint irure tempor enim adipisicing minim id.
+                            {this.props.ques}
                         </Typography>
-                        <Resources/>
+                        <Resources
+                            img={this.props.img}
+                            audio={this.props.audio}
+                            video={this.props.video}
+                            txt={this.props.txt}
+                        />
                     </CardContent>
                     </Card>
                     <div style={{}}>
@@ -33,7 +37,7 @@ class App extends React.Component {
                                 Answer
                             </Typography>   
                             <div style={{margin: '40px', overflow:'auto'}}>
-                                <Editor cipher/>
+                                <Editor cipher={this.props.cipher}/>
                             </div>
                             <CardActions style={{ position:'absolute', bottom: 0, padding: 14,left:0,width: '100%'}}>
                                 <Button variant="contained" style={{margin:'auto',backgroundColor:'#31e7b6', color:'#373d41'}} size="medium" color="primary">
@@ -49,4 +53,9 @@ class App extends React.Component {
     }
 }
 
-export default App
+function mapStateToProps(state){
+    var {ques,img,audio,video,cipher,txt}=state.quesState
+    return({ques,img,audio,video,cipher,txt})
+}
+
+export default connect(mapStateToProps)(App)

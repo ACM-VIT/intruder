@@ -13,7 +13,7 @@ function Transition(props) {
 
 class AlertDialogSlide extends React.Component {
   state = {
-    open: true,
+    open: this.props.message?true:false,
   };
 
   handleClickOpen = () => {
@@ -28,7 +28,6 @@ class AlertDialogSlide extends React.Component {
     return (
       <div>
         <Dialog
-            classes={{root:{background:'red',color:'blue'},container:{background:'red',color:'blue'}}}
           open={this.state.open}
           TransitionComponent={Transition}
           keepMounted
@@ -39,12 +38,14 @@ class AlertDialogSlide extends React.Component {
             <div style={{background:'#31e7b6', width:480, maxWidth:'calc(100vw - 96px)'}}>
           <DialogTitle id="alert-dialog-slide-title" color="secondary">
             <div style={{fontWeight:500,color:'#303030'}}>A New Message!
-                <div style={{fontSize:15,color:'#454545'}}>(from awasthishubh)</div>
+                <div style={{fontSize:15,color:'#454545'}}>(from {this.props.messageFrom})</div>
             </div>
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description" style={{color:'#454545'}}>
-              Good Morning...
+              <pre style={{whiteSpace: 'pre-wrap'}}>
+                {this.props.message}
+              </pre>
             </DialogContentText>
           </DialogContent>
           <DialogActions>

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Clock from './components/home';
+import Login from './components/login';
 import Dashboard from './components/dashboard'
 import './App.css';
-import {HashRouter, Route, Switch } from 'react-router-dom'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';  
+import {connect} from 'react-redux'
 
 const theme = createMuiTheme({
   palette: {
@@ -24,23 +24,24 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
+  renderElem(){
+    if(this.props.loggedIn){
+      return <Dashboard/>
+    }
+    else return <Login/>
+  }
   render() {
+    console.log(this.props)
     return (
       <MuiThemeProvider theme = { theme }>
-        <HashRouter>
-          <Switch>
-            <Route path='/dashboard'>
-              <Dashboard/>
-            </Route>
-            <Route path='/'>
-            <Clock/>
-            </Route>
-          </Switch>
-        </HashRouter>
-        </MuiThemeProvider>
+        {this.renderElem.bind(this)()}
+      </MuiThemeProvider>
       
     );
   }
 }
 
-export default App;
+function mapStateToProps(state){
+  return({loggedIn:state.appState.loggedIn})
+}
+export default connect(mapStateToProps)(App)

@@ -45,7 +45,7 @@ class ResponsiveDrawer extends React.Component {
             <ul>
               {(()=>{
                 let a=[]
-                require('../../../config.json').rules.forEach(element => {
+                require('../../../../config.json').rules.forEach(element => {
                   a.push(<li>{element}</li>)
                 });
                 return a;
