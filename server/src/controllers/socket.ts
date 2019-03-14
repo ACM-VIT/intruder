@@ -1,5 +1,5 @@
 import { io } from '../app';
-import { fetch, fetchedQuestions } from '../utils/fetchQuestions';
+import { fetch, QuestionGetter, Question } from '../utils/fetchQuestions';
 import * as jwt from '../utils/jwt';
 
 interface Users {
@@ -7,6 +7,7 @@ interface Users {
 }
 
 // Configuration vars
+const queGetter = new QuestionGetter();
 let questionsFetched = false;
 let adminLock = true;
 let adminId: string = null;
@@ -14,6 +15,7 @@ let initialized = false;
 
 // State vars
 const users: Users = {};
+let currentQuestion: Question = null;
 
 const connectionFunc = (socket): void => {
   socket.on('adminLogin', (password, cb): void => {
@@ -30,7 +32,8 @@ const connectionFunc = (socket): void => {
   });
   socket.on('emitQuestion', (cb): void => {
     if (questionsFetched && socket.id === adminId) {
-      io.emit('question', fetchedQuestions[0]);
+      currentQuestion = queGetter.get();
+      io.emit('question', currentQuestion);
       initialized = true;
       cb(true);
     }

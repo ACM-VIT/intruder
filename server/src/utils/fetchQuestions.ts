@@ -71,11 +71,28 @@ class Question {
   }
 }
 
-const fetchedQuestions: Question[] = [];
+class QuestionGetter {
+  private static readonly fetchedQuestions: Question[];
+
+  private static curNum: number = -1;
+
+  public push(que: Question): void {
+    QuestionGetter.fetchedQuestions.push(que);
+  }
+
+  public get(): Question {
+    if (QuestionGetter.curNum < QuestionGetter.fetchedQuestions.length) {
+      QuestionGetter.curNum += 1;
+      return QuestionGetter.fetchedQuestions[QuestionGetter.curNum];
+    }
+    return null;
+  }
+}
 
 function fetch(notify: () => void): void {
   let totalCount: number = -1;
   let count = -1;
+  const queStore: QuestionGetter = new QuestionGetter();
   const cb = (bool: boolean): void => {
     if (!bool) {
       process.stderr.write('Error fetching question\n');
@@ -91,7 +108,7 @@ function fetch(notify: () => void): void {
     cb(true);
     for (let i = 0; i < data; i += 1) {
       const que = new Question(cb);
-      fetchedQuestions.push(que);
+      queStore.push(que);
     }
   }).catch((err) => {
     process.stderr.write(`Error counting questions: ${err.message}\n`);
@@ -99,4 +116,4 @@ function fetch(notify: () => void): void {
   });
 }
 
-export { fetch, fetchedQuestions };
+export { fetch, QuestionGetter, Question };
