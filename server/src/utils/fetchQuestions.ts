@@ -75,7 +75,7 @@ const fetchedQuestions: Question[] = [];
 
 function fetch(notify: () => void): void {
   let totalCount: number = -1;
-  let count = 0;
+  let count = -1;
   const cb = (bool: boolean): void => {
     if (!bool) {
       process.stderr.write('Error fetching question\n');
@@ -88,6 +88,7 @@ function fetch(notify: () => void): void {
   };
   QuestionModel.countDocuments({}).then((data) => {
     totalCount = data;
+    cb(true);
     for (let i = 0; i < data; i += 1) {
       const que = new Question(cb);
       fetchedQuestions.push(que);

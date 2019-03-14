@@ -7,12 +7,13 @@ interface Users {
 }
 
 // Configuration vars
+let questionsFetched = false;
 let adminLock = true;
 let adminId: string = null;
 let initialized = false;
 
 // State vars
-const users: Users = {} as Users;
+const users: Users = {};
 
 const connectionFunc = (socket): void => {
   socket.on('adminLogin', (password, cb): void => {
@@ -27,11 +28,13 @@ const connectionFunc = (socket): void => {
     cb(false);
     return null;
   });
-  socket.on('emitQuestion', (): void => {
-    if (socket.id === adminId) {
+  socket.on('emitQuestion', (cb): void => {
+    if (questionsFetched && socket.id === adminId) {
       io.emit('question', fetchedQuestions[0]);
       initialized = true;
+      cb(true);
     }
+    cb(false);
   });
   socket.on('join', (token, cb): void => {
     let payload: any;
@@ -56,6 +59,11 @@ const connectionFunc = (socket): void => {
 
 const registerIO = (): void => {
   io.on('connection', connectionFunc);
+  fetch(() => {
+    questionsFetched = true;
+    io.to(adminId).emit('ready');
+    process.stdout.write('Questions fetched successfully\n\n');
+  });
 };
 
 export default registerIO;
