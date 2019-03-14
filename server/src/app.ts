@@ -28,6 +28,7 @@ process.on('uncaughtException', (err: Error) => {
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true }, (err: Error) => {
   if (err) {
     process.stderr.write(err.toString());
+    process.exit(1);
   }
   process.stdout.write('Connected to mongodb\n');
 });
