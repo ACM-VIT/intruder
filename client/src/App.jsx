@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Clock from './components/home';
-import Dashboard from './components/dashboard/layout'
+import Dashboard from './components/dashboard'
 import './App.css';
 import {HashRouter, Route, Switch } from 'react-router-dom'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';  
@@ -13,9 +13,9 @@ const theme = createMuiTheme({
         dark: 'rgb(49, 231, 182)'
      },
      secondary: {
-      light: 'rgb(49, 231, 182)',
-       main: 'rgb(49, 231, 182)',
-       dark: 'rgb(49, 231, 182)'
+      light: '#fff',
+       main: '#303030',
+       dark: '#303030'
      },
   },
   typography: { 

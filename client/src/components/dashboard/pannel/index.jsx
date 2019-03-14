@@ -4,9 +4,9 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Editor from './index'
-
-require('./style.css')
+import Editor from './editor'
+import Resources from './resources'
+require('../style.css')
 
 class App extends React.Component {
     render(){
@@ -18,13 +18,12 @@ class App extends React.Component {
                         <Typography gutterBottom style={{textAlign:'left',color:'#31e7b6',fontWeight:'bold',}}>
                             Question
                         </Typography>
-                        <CardActions>
                         <Typography component="p" style={{color:'#fff',padding: '10px 40px'}}>
                             Nulla ea adipisicing officia tempor ex deserunt elit sint irure tempor enim adipisicing minim id.
                             Nulla ea adipisicing officia tempor ex deserunt elit sint irure tempor enim adipisicing minim id.
                             Nulla ea adipisicing officia tempor ex deserunt elit sint irure tempor enim adipisicing minim id.
                         </Typography>
-                        </CardActions>
+                        <Resources/>
                     </CardContent>
                     </Card>
                     <div style={{}}>
@@ -32,9 +31,9 @@ class App extends React.Component {
                         <CardContent style={{textAlign:'left',position:'relative'}}>
                             <Typography color="textSecondary" gutterBottom style={{position:'absolute' ,color:'#31e7b6',fontWeight:'bold'}}>
                                 Answer
-                            </Typography>
+                            </Typography>   
                             <div style={{margin: '40px', overflow:'auto'}}>
-                                <Editor />
+                                <Editor cipher/>
                             </div>
                             <CardActions style={{ position:'absolute', bottom: 0, padding: 14,left:0,width: '100%'}}>
                                 <Button variant="contained" style={{margin:'auto',backgroundColor:'#31e7b6', color:'#373d41'}} size="medium" color="primary">

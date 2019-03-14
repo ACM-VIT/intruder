@@ -42,11 +42,13 @@ class CircularIntegration extends React.Component {
   render() {
     const { classes } = this.props;
     
-    var animateClass=this.props.sec>3?'':' animated infinite tada'
+    var animateClass=this.props.sec>3?'':this.props.done?' animated infinite pulse':' animated infinite tada'
+
     return (
       <div className={classes.root} style={{flexDirection:'column'}}>
-        {!this.props.done?<div style={{color:'#fff',fontWeight:900,marginBottom:10,fontSize:30}}>Wait for</div>:
-          <div/>}
+        <div style={{color:'#fff',fontWeight:900,marginBottom:10,fontSize:30,height:40}}>
+          {!this.props.done?'Wait for':''}
+          </div>
         <div style={{margin:'auto'}} className={classes.wrapper+animateClass}>
           <Fab style={{ height: 200, width: 200, backgroundColor:'#454545'}}>
             <div style={{fontSize:80, color:'#fff'}}>{Math.floor(this.props.sec)}</div>
@@ -56,11 +58,11 @@ class CircularIntegration extends React.Component {
             size={210} 
             className={classes.fabProgress} 
             variant="static"
-            value={this.props.sec*100/20}
+            value={this.props.sec*100/this.props.totalSec}
 
           />
         </div>
-        <div style={{color:'#fff',fontWeight:900,marginTop:10,fontSize:30}}>
+        <div style={{color:'#fff',fontWeight:900,marginTop:10,fontSize:30,height:40}}>
           {this.props.done?'Requesting question...':'Seconds'}
         </div>
       </div>

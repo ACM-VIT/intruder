@@ -24,10 +24,10 @@ class App extends Component {
     return (
       <div className="" style={style}>
         <div style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <div style={{ fontSize: 70, fontWeight: 900, color: 'rgb(49, 231, 182)' }}>Intruder</div>
+          {/* <div style={{ fontSize: 70, fontWeight: 900, color: 'rgb(49, 231, 182)' }}>Intruder</div> */}
         </div>
-        <Login />
-        {/* <Timmer/> */}
+        {/* <Login /> */}
+        <Timmer/>
         <div style={{ display: 'flex', flex: 1 }}></div>
       </div>
     )
