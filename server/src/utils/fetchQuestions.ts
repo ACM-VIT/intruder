@@ -1,7 +1,7 @@
 import UserModel from '../models/user';
 import QuestionModel from '../models/question';
 
-interface Attempt {
+export interface Attempt {
   username: string;
   solution: any;
 }
@@ -115,4 +115,8 @@ function fetch(notify: () => void): void {
   });
 }
 
-export { fetch, QuestionGetter, Question, Attempt };
+export {
+  fetch,
+  QuestionGetter,
+  Question,
+};
