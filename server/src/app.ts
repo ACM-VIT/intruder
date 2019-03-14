@@ -7,6 +7,7 @@ import * as mongoose from 'mongoose';
 
 import env from './env';
 
+import registerIO from './controllers/socket';
 import UserRouter from './controllers/user';
 
 env();

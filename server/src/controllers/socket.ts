@@ -2,11 +2,19 @@ import { io } from '../app';
 import { fetch, fetchedQuestions } from '../utils/fetchQuestions';
 import * as jwt from '../utils/jwt';
 
+interface Users {
+  [prop:string]: string;
+}
+
+// Configuration vars
 let adminLock = true;
 let adminId: string = null;
 let initialized: boolean = false;
 
-io.on('connection', (socket) => {
+// State vars
+const users: Users = {} as Users;
+
+const connectionFunc = (socket) => {
   socket.on('adminLogin', (password, cb): void => {
     if (password === process.env.ADMIN_PASSWORD) {
       adminLock = true;
@@ -29,7 +37,8 @@ io.on('connection', (socket) => {
     let payload: any;
     try {
       payload = jwt.verify(token);
-      console.log(payload);
+      users[socket.id as string] = payload.username;
+      cb(true);
     } catch (err) {
       cb(false);
       socket.disconnect();
@@ -43,4 +52,10 @@ io.on('connection', (socket) => {
     }
     return null;
   });
-});
+}
+
+const registerIO = () => {
+  io.on('connection', connectionFunc);
+}
+
+export default registerIO;
