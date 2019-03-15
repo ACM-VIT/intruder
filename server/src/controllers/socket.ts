@@ -35,7 +35,13 @@ const setCriticalStateTimer = (): void => {
     prevScorerSocket = null;
     criticalState = false;
     gotMessage = false;
-  }, 3000);
+    const socket = io.sockets.connected[prevScorerSocket];
+    if (!socket) {
+      io.emit('question', currentQuestion);
+    } else {
+      socket.broadcast.emit('question', currentQuestion);
+    }
+  }, 5000);
 };
 const setSuccessMessageTimer = (): void => {
   successMessageTimer = setTimeout(() => {
@@ -56,7 +62,7 @@ const connectionFunc = (socket): void => {
     if (password === process.env.ADMIN_PASSWORD) {
       adminLock = true;
       adminId = socket.id;
-      process.stdout.write('Admin LoggedIn: Ready to KickOff\n\n');
+      process.stdout.write('Admin LoggedIn, Ready to KickOff!\n\n');
       cb(true);
       return null;
     }
@@ -73,20 +79,30 @@ const connectionFunc = (socket): void => {
     }
     cb(false);
   });
+  socket.on('skip', (): void => {
+    if (!criticalState && socket.id === adminId) {
+      criticalState = true;
+      currentQuestion = QuestionGetter.get();
+      const finished = (currentQuestion === null);
+      io.emit('success', { username: 'Admin', finished });
+      io.emit('successMessage', { username: 'Admin', message: '' });
+      setCriticalStateTimer();
+    }
+  });
   socket.on('join', (token, cb): void => {
     let payload: any;
     try {
       payload = jwt.verify(token);
       users[socket.id as string] = payload.username;
+      if ((prevScorer === payload.username) && socket.connected && !gotMessage) {
+        prevScorerSocket = socket.id;
+        socket.emit('messageRequired');
+      }
       if (currentQuestion !== null && socket.connected
         && (!criticalState || prevScorer === payload.username)) {
         socket.emit('question', currentQuestion);
       } else {
         socket.emit('criticalState');
-      }
-      if (socket.connected && !gotMessage && (prevScorer === payload.username)) {
-        prevScorerSocket = socket.id;
-        socket.emit('messageRequired');
       }
       cb(true);
     } catch (err) {
@@ -126,7 +142,7 @@ const connectionFunc = (socket): void => {
     clearTimeout(successMessageTimer);
     successMessageTimer = null;
     gotMessage = true;
-    io.emit('successMessage', { username: prevScorer, message });
+    socket.broadcast.emit('successMessage', { username: prevScorer, message });
     socket.emit('question', currentQuestion);
     setCriticalStateTimer();
     return null;
