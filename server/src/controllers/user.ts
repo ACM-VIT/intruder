@@ -29,11 +29,13 @@ router.post('/enter', (req: Express.Request, res: Express.Response): any => {
       return null;
     }
     return User.create({ username, name });
-  }).then(() => {
-    res.status(200).json({
-      error: false,
-      data: { token: jwt.issueToken({ username }) },
-    });
+  }).then((data) => {
+    if (data !== null) {
+      res.status(200).json({
+        error: false,
+        data: { token: jwt.issueToken({ username }) },
+      });
+    }
   }).catch(() => res.status(500).json({
     error: true,
     data: { message: 'Error creating user' },

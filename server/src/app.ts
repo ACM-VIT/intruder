@@ -7,12 +7,15 @@ import * as mongoose from 'mongoose';
 
 import env from './env';
 
+import registerIO from './controllers/socket';
 import UserRouter from './controllers/user';
 
-env();
 const app = Express();
 const server = http.createServer(app);
 const io = socketIO(server);
+
+env();
+registerIO();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -28,6 +31,7 @@ process.on('uncaughtException', (err: Error) => {
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true }, (err: Error) => {
   if (err) {
     process.stderr.write(err.toString());
+    process.exit(1);
   }
   process.stdout.write('Connected to mongodb\n');
 });
