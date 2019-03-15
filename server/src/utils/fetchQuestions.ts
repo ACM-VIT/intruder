@@ -80,8 +80,8 @@ class QuestionGetter {
   }
 
   public static get(): Question {
+    QuestionGetter.curNum += 1;
     if (QuestionGetter.curNum < QuestionGetter.fetchedQuestions.length) {
-      QuestionGetter.curNum += 1;
       return QuestionGetter.fetchedQuestions[QuestionGetter.curNum];
     }
     return null;
