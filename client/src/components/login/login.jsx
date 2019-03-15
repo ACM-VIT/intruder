@@ -9,21 +9,33 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import {login} from '../../actions'
+import {connect} from 'react-redux'
 
 const styles = theme => ({
     multilineColor:{
         color:'rgb(49, 231, 182)',
     },
 })
+
 class App extends Component {
+    constructor(props){
+        super(props);
+        this.state={name:'',usid:''}
+    }
+    submit(){
+        this.props.login(this.state.name,this.state.usid)
+    }
+
     render(){
         const { classes } = this.props;
         return(
-            <Card style={{width:'100%', maxWidth:'400px',color:'#fff', background:'rgb(69, 69, 69)'}}>
+            <Card className="animated fadeInLeft" style={{width:'100%', maxWidth:'400px',color:'#fff', background:'rgb(69, 69, 69)'}}>
             
       <CardContent style={{color:'#fff'}}>
       <TextField
-            id="outlined-email-input"
+            value={this.state.name}
+            onChange={(e)=>this.setState({name:e.target.value})}
             label="Name"
             margin="normal"
             variant="outlined"
@@ -35,7 +47,8 @@ class App extends Component {
             }}
         /><br></br>
         <TextField
-            id="outlined-email-input"
+            value={this.state.usid}
+            onChange={(e)=>this.setState({usid:e.target.value})}
             style={{width:'100%'}}
             label="Unique ID"
             margin="normal"
@@ -52,7 +65,10 @@ class App extends Component {
             }}
         />
       </CardContent>
-      <div style={{padding:20,fontSize:20,fontWeight:900,color:'rgb(55, 61, 65)', background:'rgb(49, 231, 182)',textAlign:'center'}}>
+      <div 
+        style={{cursor:'pointer', padding:20,fontSize:20,fontWeight:900,color:'rgb(55, 61, 65)', background:'rgb(49, 231, 182)',textAlign:'center'}}
+        onClick={this.submit.bind(this)}
+        >
                 Login
             </div>
     </Card>
@@ -62,6 +78,9 @@ class App extends Component {
 
 App.propTypes = {
     classes: PropTypes.object.isRequired,
-  };
+};
   
-  export default withStyles(styles)(App);
+function mapStateToProps(state){
+    return({loggedIn:state.appState.loggedIn})
+}
+  export default connect(mapStateToProps,{login})(withStyles(styles)(App));

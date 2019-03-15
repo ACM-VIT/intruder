@@ -15,11 +15,10 @@ class App extends React.Component {
       }
     }
     onChange(newValue, e) {
-      if(!this.props.cipher)
-        return this.setState({code:newValue})
-      if(newValue===this.state.code.slice(0,-1))
-        return this.setState({code:newValue})
-      if(newValue.slice(0,-1)===this.state.code){
+      if(!this.props.cipher || newValue===this.props.value.slice(0,-1))
+        return this.props.onChange(newValue)
+
+      if(newValue.slice(0,-1)===this.props.value){
         var asci=newValue.slice(-1).charCodeAt();
         if(asci>=65 && asci<=90){
           asci=cipherFun(asci-65)+65
@@ -28,9 +27,9 @@ class App extends React.Component {
           asci=cipherFun(asci-97)+97
         }
         var ne=String.fromCharCode(asci)
-        return this.setState({code:this.state.code+ne})
+          return this.props.onChange(this.props.value+ne)
       }
-      else return this.setState({code:''})
+      else return this.props.onChange('')
 
     }
     render() {
@@ -46,12 +45,12 @@ class App extends React.Component {
           height={200}
           width="100%"
           theme="twilight"
-          value={this.state.code}
+          value={this.props.value}
           onChange={this.onChange.bind(this)}
           name="UNIQUE_ID_OF_DIV"
           editorProps={{$blockScrolling: true}}
           onLoad={(editor) => {
-            editor.focus();
+            // editor.focus();
             editor.getSession().setUseWrapMode(true);
             editor.setTheme("ace/theme/clouds");
           }}

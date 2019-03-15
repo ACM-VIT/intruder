@@ -73,7 +73,7 @@ class ResponsiveDrawer extends React.Component {
 
           return (
             <div>
-            <AppBar style={{color:'#fff',backgroundColor:'rgb(48, 48, 48)'}} position="fixed" className={classes.appBar}>
+            <AppBar  style={{color:'#fff',backgroundColor:'rgb(48, 48, 48)'}} position="fixed" className={classes.appBar}>
               <Toolbar>
                 <IconButton
                   color="inherit"

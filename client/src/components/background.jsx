@@ -13,9 +13,9 @@ var style = {
 
 export default function(props){
     return(
-        <div className="" style={style}>
+        <div className="animated fadeIn"  style={style}>
             <div style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <div style={{ fontSize: 70, fontWeight: 900, color: 'rgb(49, 231, 182)' }}>
+                <div className="animated fadeInRight" style={{ fontSize: 70, fontWeight: 900, color: 'rgb(49, 231, 182)' }}>
                 {props.title}
                 </div>
             </div>

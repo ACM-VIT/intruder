@@ -7,14 +7,24 @@ import Typography from '@material-ui/core/Typography';
 import Editor from './editor'
 import Resources from './resources'
 import {connect} from 'react-redux'
+import {submitResponse} from '../../../../actions'
 require('../style.css')
 
 class App extends React.Component {
+    constructor(props){
+        super(props);
+        this.state={editorVal:'// Clear this and type your answer here...'}
+    }
+
+    submit(){
+        this.props.submitResponse(this.state.editorVal)
+    }
+
     render(){
         return (
             <div id="panel">
                 <div style={{marginTop:60,height:'calc(100vh - 60px)',overflow: 'auto'}}>
-                    <Card style={{margin:40, background:'#454545', color:'#fff'}}>
+                    <Card className="animated fadeInUpBig" style={{margin:40, background:'#454545', color:'#fff'}}>
                     <CardContent>
                         <Typography gutterBottom style={{textAlign:'left',color:'#31e7b6',fontWeight:'bold',}}>
                             Question
@@ -29,18 +39,26 @@ class App extends React.Component {
                             txt={this.props.txt}
                         />
                     </CardContent>
-                    </Card>
+                    </Card >
                     <div style={{}}>
-                        <Card style={{display:'block', margin:40 ,background:'#454545', color:'#fff'}}>
+                        <Card className="animated bounceInUp" style={{display:'block', margin:40 ,background:'#454545', color:'#fff'}}>
                         <CardContent style={{textAlign:'left',position:'relative'}}>
                             <Typography color="textSecondary" gutterBottom style={{position:'absolute' ,color:'#31e7b6',fontWeight:'bold'}}>
                                 Answer
                             </Typography>   
                             <div style={{margin: '40px', overflow:'auto'}}>
-                                <Editor cipher={this.props.cipher}/>
+                                <Editor
+                                    cipher={this.props.cipher}
+                                    value={this.state.editorVal}
+                                    onChange={(e)=>this.setState({editorVal:e})}
+                                />
                             </div>
                             <CardActions style={{ position:'absolute', bottom: 0, padding: 14,left:0,width: '100%'}}>
-                                <Button variant="contained" style={{margin:'auto',backgroundColor:'#31e7b6', color:'#373d41'}} size="medium" color="primary">
+                                <Button 
+                                    variant="contained" 
+                                    style={{margin:'auto',backgroundColor:'#31e7b6', color:'#373d41'}} size="medium" color="primary"
+                                    onClick={this.submit.bind(this)}
+                                >
                                     Submit
                                 </Button>
                             </CardActions>
@@ -58,4 +76,4 @@ function mapStateToProps(state){
     return({ques,img,audio,video,cipher,txt})
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps,{submitResponse})(App)

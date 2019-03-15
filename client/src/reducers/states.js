@@ -11,11 +11,11 @@ var initQuesStatus={
     audio:'https://9.cdn.music-cdn.com/audio/eyJpdiI6Im1adUhpbUVnRjhiekdoMElwbHFwMkE9PSIsInZhbHVlIjoiVEY3SnJPb2Rnc1N2Yk1aRXJoMnJiRWhuTkFDM2dlQndBMyt4cERqK2JpZDRYcWpLamIzNHdqYnpOWEl3RDdHY29ZS3Z2OUN0RmNjWlwvVVZ4ZlBHOGNlU2dLRkxjQ2FJeFFLYVRNTXhzSUJhajZwVmFQN0FFZG9mWTdjVEhFOUdHSUJtTDB2MEIrY093T2I2eWJXdHhRSnNDUkJuaTI2eFVBM1NFRzVZalRBdDhSMWRxdEFJQ2hyakEzc3kzUkJ6VzFJZmJiVSt6VFJPV1VkeVpVWXJBNUl3Sk5qV1NxazBwMDdRRWNlQlwvRjJKYWJjRVJjVXc4cUljMkZBUU8rbG5FIiwibWFjIjoiNzE5ZTU4YzZiOTJkZjA0N2YwNjg0N2VhYmI0OTAzODk0NjllNjk2NWYxMDU4MzI1YzJlZTk3OWFhNmRiZjUyNiJ9',
     video:'http://techslides.com/demos/sample-videos/small.mp4',
     txt:'kmkmk',
-    cipher:false,
+    cipher:true,
 }
 
 var initAppStatus={
-    loggedIn:false,
+    loggedIn:true,
     jwt:'',
     socketId:'',
     lock:false,
@@ -23,7 +23,7 @@ var initAppStatus={
 
 var initWaitStatus={
     wait:false,
-    waitTime:5,
+    waitTime:10,
     message:'hello hello',
     messageFrom:'shubham'
 }
@@ -48,8 +48,8 @@ function quesState(state=initQuesStatus, action){
 
 function appState(state=initAppStatus, action){
     switch(action.type){
-        case 'LOGIN_STATUS':
-            return {...state, ...action.payload}
+        case 'LOGIN_SUCCESS':
+            return {...state, loggedIn:action.payload}
         default:
             return state
     }
@@ -57,8 +57,8 @@ function appState(state=initAppStatus, action){
 
 function waitState(state=initWaitStatus, action){
     switch(action.type){
-        case 'LOGIN_STATUS':
-            return {...state, ...action.payload}
+        case 'WAIT_STATUS':
+            return {...state, wait:action.payload}
         default:
             return state
     }

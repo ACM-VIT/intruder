@@ -38,7 +38,7 @@ class ResponsiveDrawer extends React.Component {
 
     const drawer = (
         <div style={{ color:'#fff', background:'rgb(48, 48, 48)'}}>
-          <div style={{margin:20}}>
+          <div style={{margin:20}} >
           <h2 style={{margin:0,height:40, color:'#31e7b6'}}>Rules</h2>
           <Divider/>
           <div style={{marginTop:10, overflow:'auto',lineHeight: 1.5}}>
@@ -58,9 +58,9 @@ class ResponsiveDrawer extends React.Component {
     );
 
     return (
-        <div id="leftBar" className={classes.root}>
+        <div id="leftBar" className={classes.root} >
         <Bar onClick={this.handleDrawerToggle}/>
-        <nav className={classes.drawer}>
+        <nav className={classes.drawer} >
           <Hidden smUp implementation="css">
             <Drawer
               style={{backgroundColor:'rgb(48, 48, 48)'}}
