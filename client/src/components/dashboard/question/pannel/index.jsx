@@ -7,13 +7,18 @@ import Typography from '@material-ui/core/Typography';
 import Editor from './editor'
 import Resources from './resources'
 import {connect} from 'react-redux'
-import {submitResponse} from '../../../../actions'
+import {submitResponse,sendMsg} from '../../../../actions'
+import SuccessDialog from '../successDiag'
 require('../style.css')
 
 class App extends React.Component {
     constructor(props){
         super(props);
-        this.state={editorVal:'// Clear this and type your answer here...'}
+        this.state={
+            editorVal:'// Clear this and type your answer here...',
+            successMsg:''
+        }
+
     }
 
     submit(){
@@ -23,6 +28,7 @@ class App extends React.Component {
     render(){
         return (
             <div id="panel">
+                {this.props.success?<SuccessDialog open={this.props.success} sendMsg={this.props.sendMsg}/>:<div/>}
                 <div style={{marginTop:60,height:'calc(100vh - 60px)',overflow: 'auto'}}>
                     <Card className="animated fadeInUpBig" style={{margin:40, background:'#454545', color:'#fff'}}>
                     <CardContent>
@@ -51,15 +57,21 @@ class App extends React.Component {
                                     cipher={this.props.cipher}
                                     value={this.state.editorVal}
                                     onChange={(e)=>this.setState({editorVal:e})}
+                                    lock={this.props.lock}
                                 />
                             </div>
                             <CardActions style={{ position:'absolute', bottom: 0, padding: 14,left:0,width: '100%'}}>
                                 <Button 
                                     variant="contained" 
-                                    style={{margin:'auto',backgroundColor:'#31e7b6', color:'#373d41'}} size="medium" color="primary"
+                                    style={{
+                                        margin:'auto',
+                                        backgroundColor:'#31e7b6',
+                                        color:'#373d41',
+                                        pointerEvents:this.props.lock?'none':'auto'
+                                    }} size="medium" color="primary"
                                     onClick={this.submit.bind(this)}
                                 >
-                                    Submit
+                                    {this.props.lock?'Locked!':'Submit'}
                                 </Button>
                             </CardActions>
                         </CardContent>
@@ -73,7 +85,8 @@ class App extends React.Component {
 
 function mapStateToProps(state){
     var {ques,img,audio,video,cipher,txt}=state.quesState
-    return({ques,img,audio,video,cipher,txt})
+    var {lock,success}=state.appState
+    return({ques,img,audio,video,cipher,txt,lock,success})
 }
 
-export default connect(mapStateToProps,{submitResponse})(App)
+export default connect(mapStateToProps,{submitResponse,sendMsg})(App)

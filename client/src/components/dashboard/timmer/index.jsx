@@ -17,6 +17,7 @@ class App extends Component {
     setTimeout((e)=>{
       clearInterval(tiId)
       this.setState({done:true})
+      this.setState({sec:0})
     },this.state.sec*1000+100)
   }
   render() {

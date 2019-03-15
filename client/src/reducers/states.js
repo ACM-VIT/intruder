@@ -19,6 +19,7 @@ var initAppStatus={
     jwt:'',
     socketId:'',
     lock:false,
+    success:true
 }
 
 var initWaitStatus={
@@ -59,6 +60,8 @@ function waitState(state=initWaitStatus, action){
     switch(action.type){
         case 'WAIT_STATUS':
             return {...state, wait:action.payload}
+        case 'SUCCESS_WAIT':
+            return {...state, wait: true, waitTime:0,message:''}
         default:
             return state
     }

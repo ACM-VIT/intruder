@@ -27,8 +27,8 @@ class App extends React.Component {
 
                     {this.props.img?
                         <div style={{display:'inline-block', padding:15}}>
-                            <img style={{maxWidth:'100%',maxHeight:'200px'}} src={this.props.img}/>
-                            <br/><a target="_blank" style={{color:'#31e7b6'}} href={this.props.img}>Download</a>
+                            <img alt="img" style={{maxWidth:'100%',maxHeight:'200px'}} src={this.props.img}/>
+                            <br/><a target="_blank" rel="noopener noreferrer" style={{color:'#31e7b6'}} href={this.props.img}>Download</a>
                         </div>
                         :<div/>
                     }
@@ -39,7 +39,7 @@ class App extends React.Component {
                             <video style={{maxWidth:'100%',maxHeight:'200px'}} controls>
                                 <source src={this.props.video} type="video/mp4"/>
                             </video>
-                            <br/><a target="_blank" style={{color:'#31e7b6'}} href={this.props.video}> Download</a>
+                            <br/><a target="_blank" rel="noopener noreferrer" style={{color:'#31e7b6'}} href={this.props.video}> Download</a>
                         </div>
                         :<div/>
                     }
@@ -50,7 +50,7 @@ class App extends React.Component {
                             <audio controls>
                             <source src={this.props.audio} type="audio/mp3"/>
                             </audio>
-                            <br/><a target="_blank" style={{color:'#31e7b6'}} href={this.props.audio}>Download</a>
+                            <br/><a target="_blank" rel="noopener noreferrer" style={{color:'#31e7b6'}} href={this.props.audio}>Download</a>
                         </div>
                         :<div/>
                     }

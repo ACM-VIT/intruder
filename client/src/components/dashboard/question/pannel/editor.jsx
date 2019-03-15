@@ -15,6 +15,7 @@ class App extends React.Component {
       }
     }
     onChange(newValue, e) {
+      if(this.props.lock) return this.props.onChange(this.props.value)
       if(!this.props.cipher || newValue===this.props.value.slice(0,-1))
         return this.props.onChange(newValue)
 
@@ -42,7 +43,7 @@ class App extends React.Component {
           cursor="slim"
           mode="asciidoc"
           fontSize= {16}
-          height={200}
+          height='200px'
           width="100%"
           theme="twilight"
           value={this.props.value}
@@ -50,9 +51,7 @@ class App extends React.Component {
           name="UNIQUE_ID_OF_DIV"
           editorProps={{$blockScrolling: true}}
           onLoad={(editor) => {
-            // editor.focus();
             editor.getSession().setUseWrapMode(true);
-            editor.setTheme("ace/theme/clouds");
           }}
         />
       );

@@ -35,6 +35,15 @@ function submitResponse(res){
     }
 }
 
+function sendMsg(res){
+    return (dispatch)=>{
+        console.log('submitting...',res)
+        dispatch({
+            type:'SUCCESS_WAIT',
+        })
+    }
+}
+
 export {
-    connectToSocket, login, submitResponse
+    connectToSocket, login, submitResponse,sendMsg
 }

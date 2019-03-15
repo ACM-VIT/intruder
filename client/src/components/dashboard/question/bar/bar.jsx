@@ -96,7 +96,7 @@ class ResponsiveDrawer extends React.Component {
                   >
                     <AccountCircle />
                   </IconButton>
-                  <Typography variant="p" color="inherit" noWrap onClick={this.handleProfileMenuOpen} style={{cursor:'pointer'}}>
+                  <Typography variant="subtitle1" color="inherit" noWrap onClick={this.handleProfileMenuOpen} style={{cursor:'pointer'}}>
                   <span style={{color:'grey'}}>awasthishubh</span>
                 </Typography>
               </Toolbar>
