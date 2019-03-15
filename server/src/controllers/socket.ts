@@ -40,7 +40,12 @@ const setCriticalStateTimer = (): void => {
 const setSuccessMessageTimer = (): void => {
   successMessageTimer = setTimeout(() => {
     gotMessage = true;
-    io.emit('successMessage', { username: prevScorer, message: '' });
+    const socket = io.sockets.connected[prevScorerSocket];
+    if (!socket) {
+      io.emit('successMessage', { username: prevScorer, message: '' });
+    } else {
+      socket.broadcast.emit('successMessage', { username: prevScorer, message: '' });
+    }
     io.to(prevScorerSocket).emit('question', currentQuestion);
     setCriticalStateTimer();
   }, 7000);
@@ -105,8 +110,11 @@ const connectionFunc = (socket): void => {
         prevScorer = username;
         currentQuestion = QuestionGetter.get();
         const finished = (currentQuestion === null);
-        io.emit('success', { username, finished });
+        socket.broadcast.emit('success', { username, finished });
+        socket.emit('pass');
         setSuccessMessageTimer();
+      } else {
+        socket.emit('fail');
       }
     });
     return null;
