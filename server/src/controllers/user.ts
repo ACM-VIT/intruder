@@ -2,7 +2,7 @@ import * as Express from 'express';
 import { Document } from 'mongoose';
 
 import * as jwt from '../utils/jwt';
-import User from '../models/user';
+import { User } from '../models/user';
 
 const router = Express.Router();
 

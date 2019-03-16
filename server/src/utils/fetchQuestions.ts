@@ -1,4 +1,4 @@
-import UserModel from '../models/user';
+import { User as UserModel } from '../models/user';
 import QuestionModel from '../models/question';
 
 export interface Attempt {
