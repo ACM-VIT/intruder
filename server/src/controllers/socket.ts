@@ -6,6 +6,7 @@ import {
   Attempt,
 } from '../utils/fetchQuestions';
 import * as jwt from '../utils/jwt';
+import { User } from '../models/user';
 
 interface Users {
   [prop: string]: string;
@@ -15,6 +16,7 @@ interface Users {
 let questionsFetched = false;
 let adminLock = true;
 let initialized = false;
+let finished = false;
 let criticalState = false;
 let gotMessage = false;
 
@@ -26,6 +28,7 @@ let prevScorerMessage: string = null;
 let currentQuestion: Question = null;
 let adminId: string = null;
 let statsId: string = null;
+let result: any = null;
 
 // Timers
 let successMessageTimer: any = null;
@@ -50,7 +53,7 @@ const setSuccessMessageTimer = (): void => {
   successMessageTimer = setTimeout(() => {
     gotMessage = true;
     const socket = io.sockets.connected[prevScorerSocket];
-    prevScorerMessage = '';
+    prevScorerMessage = 'Well, He intruded successfully but he\'s kinda slow!';
     if (!socket) {
       io.emit('successMessage', { username: prevScorer, message: prevScorerMessage });
     } else {
@@ -59,9 +62,40 @@ const setSuccessMessageTimer = (): void => {
         message: prevScorerMessage,
       });
     }
-    io.to(prevScorerSocket).emit('question', currentQuestion);
-    setCriticalStateTimer();
+    io.to(statsId).emit('intruderMessage', {
+      username: prevScorer,
+      message: prevScorerMessage,
+    });
+    if (currentQuestion !== null) {
+      io.to(prevScorerSocket).emit('question', currentQuestion);
+      setCriticalStateTimer();
+    }
   }, 7000);
+};
+
+// Method to compute result
+const computeResult = () => {
+  process.stdout.write('Computing results...\n\n');
+  User.aggregate([
+    {
+      $group: {
+        _id: { score: '$score' },
+        scorers: { $addToSet: { username: '$username', name: '$name' } },
+      },
+    },
+    {
+      $sort: {
+        score: -1,
+      },
+    },
+  ]).then((data) => {
+    result = data;
+    process.stdout.emit('Emitting Results');
+    io.to(statsId).emit('result', data);
+  }).catch((err) => {
+    process.stderr.write(`Error computing results: ${err.toString()}\n\n`);
+    io.to(statsId).emit('result', 'Results will be declared soon!');
+  });
 };
 
 const connectionFunc = (socket): void => {
@@ -98,6 +132,9 @@ const connectionFunc = (socket): void => {
     if (criticalState) {
       socket.emit('intruderMessage', { username: prevScorer, message: prevScorerMessage });
     }
+    if (finished) {
+      socket.emit('result', result);
+    }
     return null;
   });
   socket.on('emitQuestion', (cb): void => {
@@ -114,9 +151,16 @@ const connectionFunc = (socket): void => {
     if (!criticalState && socket.id === adminId) {
       criticalState = true;
       prevScorer = 'Admin';
-      prevScorerMessage = '';
+      prevScorerMessage = 'Admin was here! #KIDS :P';
       currentQuestion = QuestionGetter.get();
-      const finished = (currentQuestion === null);
+      finished = (currentQuestion === null);
+      if (finished) {
+        setTimeout(() => {
+          computeResult();
+        }, 2000);
+      } else {
+        setCriticalStateTimer();
+      }
       io.emit('success', { username: prevScorer, finished });
       io.emit('successMessage', { username: prevScorer, message: prevScorerMessage });
       io.to(statsId).emit('intruded', { username: prevScorer });
@@ -124,7 +168,6 @@ const connectionFunc = (socket): void => {
         username: prevScorer,
         message: prevScorerMessage,
       });
-      setCriticalStateTimer();
     }
   });
   socket.on('join', (token, cb): void => {
@@ -163,7 +206,7 @@ const connectionFunc = (socket): void => {
         prevScorerSocket = socket.id;
         prevScorer = username;
         currentQuestion = QuestionGetter.get();
-        const finished = (currentQuestion === null);
+        finished = (currentQuestion === null);
         socket.broadcast.emit('success', { username, finished });
         socket.emit('pass');
         io.to(statsId).emit('intruderSuccess', { username, finished });
@@ -184,8 +227,14 @@ const connectionFunc = (socket): void => {
     gotMessage = true;
     socket.broadcast.emit('successMessage', { username: prevScorer, message });
     io.to(statsId).emit('intruderMessage', { useranme: prevScorer, message });
-    socket.emit('question', currentQuestion);
-    setCriticalStateTimer();
+    if (currentQuestion !== null) {
+      socket.emit('question', currentQuestion);
+      setCriticalStateTimer();
+    } else {
+      setTimeout(() => {
+        computeResult();
+      }, 2000);
+    }
     return null;
   });
   socket.on('disconnect', () => {
