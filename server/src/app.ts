@@ -26,6 +26,10 @@ process.on('uncaughtException', (err: Error) => {
   process.stderr.write(`${err.toString()}\n`);
 });
 
+process.on('unhandledRejection', (reason: string, p: any) => {
+  process.stderr.write(`Unhandled rejection at: ${p}, Reason: ${reason}`);
+});
+
 (mongoose as any).Promise = global.Promise;
 
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true }, (err: Error) => {
