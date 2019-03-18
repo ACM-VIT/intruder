@@ -18,7 +18,7 @@ const styles = theme => ({
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: '', usid: '', login: true }
+    this.state = { name: '', usid: '', login: true,admin:false }
   }
   login() {
     this.props.login(this.state.name, this.state.usid)
@@ -29,27 +29,39 @@ class App extends Component {
   loginState() {
     this.setState({ login: !this.state.login })
   }
+  adminSwitch() {
+    this.setState({ admin: !this.state.admin })
+  }
+  adminLogin(){
+    this.props.login(this.state.usid)
+  }
   render() {
     const { classes } = this.props;
     return (
       <Background title="Intruder">
         <Card className="animated fadeInLeft" style={{ width: '100%', maxWidth: '400px', color: '#fff', background: 'rgb(69, 69, 69)' }}>
+          
           <CardContent style={{ color: '#fff' }}>
-            {
-              this.state.login ?
-                <Login setState={(e)=>this.setState(e)} usid={this.state.usid}/>
-                :
-                <Reg setState={(e)=>this.setState(e)} name={this.state.name} usid={this.state.usid}/>
-            }
-            <div style={{ color: 'rgb(49, 231, 182)', textAlign: 'right' }}><a style={{ cursor: 'pointer' }} onClick={this.loginState.bind(this)}>
-              {this.state.login ? 'Register?' : 'Login?'}
-            </a></div>
+            <div style={{ color: 'rgb(49, 231, 182)', textAlign: 'left' }}><span style={{ cursor: 'pointer' }} onClick={this.adminSwitch.bind(this)}>
+                {this.state.admin?'User?' : 'Admin?'}
+            </span></div>
+            <Login 
+              setState={(e)=>this.setState(e)} 
+              usid={this.state.usid} 
+              name={this.state.name}
+              admin={this.state.admin}
+              login={this.state.login}
+            />
+            
+            <div style={{ color: 'rgb(49, 231, 182)', textAlign: 'right',height:20 }}><span style={{ cursor: 'pointer' }} onClick={this.loginState.bind(this)}>
+              {this.state.admin?'':this.state.login ? 'Register?' : 'Login?'}
+            </span></div>
           </CardContent>
           <div
             style={{ cursor: 'pointer', padding: 20, fontSize: 20, fontWeight: 900, color: 'rgb(55, 61, 65)', background: 'rgb(49, 231, 182)', textAlign: 'center' }}
-            onClick={this.state.login ? this.login.bind(this) : this.reg.bind(this)}
+            onClick={this.state.admin?this.adminLogin.bind(this):this.state.login ? this.login.bind(this) : this.reg.bind(this)}
           >
-            {this.state.login ? 'Login' : 'Register'}
+            {this.state.admin?'Admin Login':this.state.login ? 'Login' : 'Register'}
           </div>
         </Card>
       </Background>

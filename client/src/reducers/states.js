@@ -15,11 +15,11 @@ var initQuesStatus={
 }
 
 var initAppStatus={
-    loggedIn:true,
+    loggedIn:false,
     jwt:'',
-    socketId:'',
+    socket:null,
     lock:false,
-    success:true
+    success:false
 }
 
 var initWaitStatus={
@@ -50,18 +50,27 @@ function quesState(state=initQuesStatus, action){
 function appState(state=initAppStatus, action){
     switch(action.type){
         case 'LOGIN_SUCCESS':
-            return {...state, loggedIn:action.payload}
+            return {...state, loggedIn:true,jwt:action.jwt}
+        case 'SET_SUCCESS_STATE':
+            return {...state,success:true}
+        case 'LOGOUT_USER':
+            return initAppStatus
         default:
             return state
     }
 }
 
 function waitState(state=initWaitStatus, action){
+    var {wait,waitTime,message,messageFrom}=action
     switch(action.type){
         case 'WAIT_STATUS':
             return {...state, wait:action.payload}
         case 'SUCCESS_WAIT':
             return {...state, wait: true, waitTime:0,message:''}
+        case 'SEND_MESSAGE':
+            return {...state, message:action.message, messageFrom:action.messageFrom}
+        case 'SET_WAIT':
+            return {...state, message,messageFrom,wait,waitTime}
         default:
             return state
     }

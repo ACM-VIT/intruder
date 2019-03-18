@@ -12,11 +12,26 @@ const styles = theme => ({
 function App(props){
     return(
         <div>
+        {
+        !props.admin&&!props.login?
+        <TextField
+            value={props.name}
+            onChange={(e)=>props.setState({name:e.target.value})}
+            label="Name"
+            margin="normal"
+            variant="outlined"
+            style={{width:'100%'}}
+            InputProps={{
+                classes: {
+                    input: props.classes.multilineColor,
+                }
+            }}
+        />:<span/>}
         <TextField
             value={props.usid}
             onChange={(e)=>props.setState({usid:e.target.value})}
             style={{width:'100%'}}
-            label="Unique ID"
+            label={props.admin?"Admin ID":"Unique ID"}
             margin="normal"
             variant="outlined"
             InputProps={{

@@ -2,11 +2,20 @@
 import io from 'socket.io-client';
 import baseURL from '../baseUrl';
 import axios from 'axios';
-var socket;
+import Cookies from 'js-cookie'
 
 function connectToSocket(jwt) {
     return (dispatch) => {
-        socket = io.connect(baseURL, { jwt });
+        console.log('Connecting to socket')
+        let socket = io.connect('https://attendance-socket.herokuapp.com', { jwt });
+        dispatch({
+            type:'SET_SOCKET',
+            payload:socket
+        })
+        socket.on('disconnect',()=>{
+            Cookies.set('token','')
+            window.location.reload()
+        })
 
         socket.on('successMessage', function (data) {
             dispatch({
@@ -55,6 +64,20 @@ function connectToSocket(jwt) {
     }
 }
 
+function setJwt(){
+    if(Cookies.get('token')){
+        return({
+            type:'SET_JWT',
+            payload:Cookies.get('token')
+        })
+    }
+    else{
+        return({
+            type:'LOGOUT_USER',
+        })
+    }
+}
+
 // socket.emit('adminLogin') //admin
 // socket.emit('emitQuestion') // admin
 // socket.emit('submit')
@@ -86,6 +109,11 @@ function submitResponse(res) {
     }
 }
 
+function adminLogin(token){
+
+}
+
+
 function sendMsg(res) {
     return (dispatch) => {
         console.log('submitting...', res)
@@ -96,5 +124,5 @@ function sendMsg(res) {
 }
 
 export {
-    connectToSocket, login, submitResponse, sendMsg
+    connectToSocket, login, submitResponse, sendMsg,adminLogin, setJwt
 }

@@ -6,6 +6,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';  
+const theme = createMuiTheme({
+  palette: {
+     primary: {
+        light: '#303030',
+        main: '#303030',
+        dark:'#303030'
+     }
+  }
+});
 
 export default class FormDialog extends React.Component {
   state = {
@@ -15,40 +25,42 @@ export default class FormDialog extends React.Component {
   submit(){
     this.props.sendMsg(this.state.value)
   }
-
+ 
   render() {
     return (
       <div>
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          Open form dialog
-        </Button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <div style={{background:'#31e7b6', width:480, maxWidth:'calc(100vw - 96px)'}}>
+          <DialogTitle id="form-dialog-title">
+            <span style={{color:'#303030',fontWeight:600}}>Success</span>
+          </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              To subscribe to this website, please enter your email address here. We will send
-              updates occasionally.
+              Send a message to everyone.
             </DialogContentText>
+            <MuiThemeProvider theme = { theme }>
             <TextField
                 value={this.state.value}
                 onChange={(e)=>this.setState({value:e.target.value})}
                 autoFocus
                 margin="dense"
                 id="name"
-                label="Email Address"
+                label="Message"
                 type="email"
                 fullWidth
             />
+            </MuiThemeProvider>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.submit.bind(this)} color="primary">
               Submit
             </Button>
           </DialogActions>
+          </div>
         </Dialog>
       </div>
     );
