@@ -9,45 +9,45 @@ function connectToSocket(jwt) {
         console.log('Connecting to socket')
         let socket = io.connect('https://attendance-socket.herokuapp.com', { jwt });
         dispatch({
-            type:'SET_SOCKET',
-            payload:socket
+            type: 'SET_SOCKET',
+            payload: socket
         })
-        socket.on('disconnect',()=>{
-            Cookies.set('token','')
+        socket.on('disconnect', () => {
+            Cookies.set('token', '')
             window.location.reload()
         })
 
         socket.on('successMessage', function (data) {
             dispatch({
                 type: 'SEND_MESSAGE',
-                message:data.username,
-                messageFrom:data.message
+                message: data.username,
+                messageFrom: data.message
             })
         })
 
         socket.on('question', function (data) {
             dispatch({
                 type: 'SET_QUESTION',
-                
+
             })
         })
 
         socket.on('criticalState', function () {
             dispatch({
                 type: 'SET_WAIT',
-                wait:true,
-                waitTime:15,
-                message:'Someone intruded into your login. Please wait.',
-                messageFrom:'admin'
+                wait: true,
+                waitTime: 15,
+                message: 'Someone intruded into your login. Please wait.',
+                messageFrom: 'admin'
             })
         })
 
         socket.on('messageRequired', function (data) {
-            dispatch({type:'SET_SUCCESS_STATE'})
+            dispatch({ type: 'SET_SUCCESS_STATE' })
         })
 
         socket.on('success', function (data) {
-            dispatch({type:'SET_SUCCESS_STATE'})
+            dispatch({ type: 'SET_SUCCESS_STATE' })
         })
 
         socket.on('ready', function (data) {
@@ -64,16 +64,16 @@ function connectToSocket(jwt) {
     }
 }
 
-function setJwt(){
-    if(Cookies.get('token')){
-        return({
-            type:'SET_JWT',
-            payload:Cookies.get('token')
+function setJwt() {
+    if (Cookies.get('token')) {
+        return ({
+            type: 'SET_JWT',
+            payload: Cookies.get('token')
         })
     }
-    else{
-        return({
-            type:'LOGOUT_USER',
+    else {
+        return ({
+            type: 'LOGOUT_USER',
         })
     }
 }
@@ -87,15 +87,15 @@ function setJwt(){
 function login(username, name) {
     return async (dispatch) => {
         // try{
-            // var res=await axios.post(baseURL+'/enter',{username, name})
-            // dispatch({type: 'LOGIN_SUCCESS', payload: true})
-            // dispatch({type: 'SET_JWT', payload: res.data.data.token})
+        // var res=await axios.post(baseURL+'/enter',{username, name})
+        // dispatch({type: 'LOGIN_SUCCESS', payload: true})
+        // dispatch({type: 'SET_JWT', payload: res.data.data.token})
         // }
         // catch(e){
         //     dispatch({type: 'LOGIN_FAIL'})
         //     dispatch({type: 'SET_ERR_MSG', payload: e.response.data.data.message})
         // }
-        dispatch({type: 'LOGIN_SUCCESS', jwt: 'asd'})
+        dispatch({ type: 'LOGIN_SUCCESS', jwt: 'asd' })
     }
 }
 
@@ -106,11 +106,37 @@ function submitResponse(res) {
             type: 'WAIT_STATUS',
             payload: true
         })
+        // dispatch({
+        //     type: 'SEND_MESSAGE',
+        //     message: 'hello hello',
+        //     messageFrom: 'shubham'
+        // })
+        setTimeout(() => {
+            console.log('setSucces')
+            dispatch({
+                type: 'SET_SUCCESS_STATE',
+                payload: true
+            })
+        }, 3000)
+
+        setTimeout(() => {
+            console.log('sending message')
+            dispatch({
+                type: 'SEND_MESSAGE',
+                message: 'hello hello',
+                messageFrom: 'shubham'
+            })
+        }, 1000)
     }
 }
 
-function adminLogin(token){
-
+function adminLogin(token) {
+    return (dispatch) => {
+        console.log('Loggin in admin')
+        dispatch({
+            type: 'ADMIN_LOGGED_IN'
+        })
+    }
 }
 
 
@@ -118,11 +144,15 @@ function sendMsg(res) {
     return (dispatch) => {
         console.log('submitting...', res)
         dispatch({
+            type: 'SET_SUCCESS_STATE',
+            payload: false
+        })
+        dispatch({
             type: 'SUCCESS_WAIT',
         })
     }
 }
 
 export {
-    connectToSocket, login, submitResponse, sendMsg,adminLogin, setJwt
+    connectToSocket, login, submitResponse, sendMsg, adminLogin, setJwt
 }

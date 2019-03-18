@@ -8,7 +8,6 @@ import Editor from './editor'
 import Resources from './resources'
 import {connect} from 'react-redux'
 import {submitResponse,sendMsg} from '../../../../actions'
-import SuccessDialog from '../successDiag'
 require('../style.css')
 
 class App extends React.Component {
@@ -28,8 +27,7 @@ class App extends React.Component {
     render(){
         return (
             <div id="panel">
-                {this.props.success?<SuccessDialog open={this.props.success} sendMsg={this.props.sendMsg}/>:<div/>}
-                <div style={{marginTop:60,height:'calc(100vh - 60px)',overflow: 'auto'}}>
+                <div style={{height:'calc(100vh - 60px)',overflow: 'auto'}}>
                     <Card className="animated fadeInUpBig" style={{margin:40, background:'#454545', color:'#fff'}}>
                     <CardContent>
                         <Typography gutterBottom style={{textAlign:'left',color:'#31e7b6',fontWeight:'bold',}}>

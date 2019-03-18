@@ -1,41 +1,51 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import Timmer from './timmer'
 import Question from './question'
-import {connectToSocket,setJwt} from '../../actions'
+import { connectToSocket, setJwt, sendMsg } from '../../actions'
+import AdminPanel from './admin'
+import SuccessDialog from './successDiag'
 
 class App extends Component {
   constructor(props) {
     super(props)
   }
 
-  componentWillMount(){
-    if(this.props.jwt&&!this.props.socketId)
-      this.props.connectToSocket(this.props.jwt);
-    else
-      this.props.setJwt()
-      this.props.connectToSocket(this.props.jwt)
+  componentWillMount() {
+    // if (this.props.jwt && !this.props.socketId)
+    //   this.props.connectToSocket(this.props.jwt);
+    // else
+    //   this.props.setJwt()
+    // this.props.connectToSocket(this.props.jwt)
   }
 
-  renderElem(){
-    if(this.props.wait){
-      return <Timmer/>
+  renderElem() {
+    if (this.props.admin) {
+      return <AdminPanel />
     }
-    return <Question/>
+    if (this.props.wait) {
+      return <Timmer />
+    }
+    return <Question />
   }
 
   render() {
-    return this.renderElem()
+    return (
+      <div>
+        {this.props.success ? <SuccessDialog open={this.props.success} sendMsg={this.props.sendMsg} /> : <div />}
+        {this.renderElem()}
+      </div>
+    )
   }
 }
 
 
-function mapStateToProps(state){
-  return({
-    wait:state.waitState.wait,
-    jwt:state.appState.jwt,
-    socketId:state.appState.socketId
+function mapStateToProps(state) {
+  var { success, admin, jwt, socket } = state.appState
+  return ({
+    wait: state.waitState.wait,
+    success, admin, jwt, socket
   })
 }
 
-export default connect(mapStateToProps,{connectToSocket,setJwt})(App)
+export default connect(mapStateToProps, { connectToSocket, setJwt, sendMsg })(App)

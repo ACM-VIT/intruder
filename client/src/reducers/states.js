@@ -19,14 +19,15 @@ var initAppStatus={
     jwt:'',
     socket:null,
     lock:false,
-    success:false
+    success:false,
+    admin:false
 }
 
 var initWaitStatus={
     wait:false,
     waitTime:10,
-    message:'hello hello',
-    messageFrom:'shubham'
+    message:'',//''hello hello',
+    messageFrom:''//'shubham'
 }
 
 function userState(state=initUserStatus, action){
@@ -52,9 +53,11 @@ function appState(state=initAppStatus, action){
         case 'LOGIN_SUCCESS':
             return {...state, loggedIn:true,jwt:action.jwt}
         case 'SET_SUCCESS_STATE':
-            return {...state,success:true}
+            return {...state,success:action.payload}
         case 'LOGOUT_USER':
             return initAppStatus
+        case 'ADMIN_LOGGED_IN':
+            return {...state,admin:true,loggedIn:true}
         default:
             return state
     }
@@ -64,11 +67,11 @@ function waitState(state=initWaitStatus, action){
     var {wait,waitTime,message,messageFrom}=action
     switch(action.type){
         case 'WAIT_STATUS':
-            return {...state, wait:action.payload}
+            return {...state, wait:action.payload,waitTime:15}
         case 'SUCCESS_WAIT':
             return {...state, wait: true, waitTime:0,message:''}
         case 'SEND_MESSAGE':
-            return {...state, message:action.message, messageFrom:action.messageFrom}
+            return {...state, message:'action.message', messageFrom:'action.messageFrom'}
         case 'SET_WAIT':
             return {...state, message,messageFrom,wait,waitTime}
         default:

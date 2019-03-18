@@ -56,7 +56,7 @@ export default class FormDialog extends React.Component {
             </MuiThemeProvider>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.submit.bind(this)} color="primary">
+            <Button onClick={this.submit.bind(this)} color="secondary">
               Submit
             </Button>
           </DialogActions>

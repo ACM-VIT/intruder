@@ -23,10 +23,10 @@ class App extends Component {
   render() {
     return(
       <Background>
-        <Dialogue 
+        {this.props.message?<Dialogue 
           message={this.props.message}
           messageFrom={this.props.messageFrom}
-        />
+        />:<div/>}
         <Clock 
           totalSec={this.state.totalSec} 
           sec={this.state.sec>0?this.state.sec:0} 
