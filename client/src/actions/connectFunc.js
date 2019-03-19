@@ -20,7 +20,7 @@ function connectToUserSocket(jwt, dispatch) {
                     })
                     dispatch({
                         type: 'LOGIN_SUCCESS',
-                        username: username
+                        username: 'username'
                     })
                     resolve(socket, username)
                 }

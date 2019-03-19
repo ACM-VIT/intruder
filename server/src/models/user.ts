@@ -9,6 +9,10 @@ const user: Schema = new Schema({
     type: Schema.Types.String,
     required: true,
   },
+  passcode: {
+    type: Schema.Types.String,
+    required: true,
+  },
   score: {
     type: Schema.Types.Number,
     default: 0,

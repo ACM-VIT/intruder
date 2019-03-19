@@ -65,7 +65,7 @@ class ResponsiveDrawer extends React.Component {
               open={Boolean(anchorEl)}
               onClose={this.handleMenuClose}
             >
-              <MenuItem>Shubham Awasthi</MenuItem>
+              {/* <MenuItem>Shubham Awasthi</MenuItem> */}
               <MenuItem onClick={this.handleMenuClose}>Logout</MenuItem>
             </Menu>
           );
@@ -97,7 +97,7 @@ class ResponsiveDrawer extends React.Component {
                     <AccountCircle />
                   </IconButton>
                   <Typography variant="subtitle1" color="inherit" noWrap onClick={this.handleProfileMenuOpen} style={{cursor:'pointer'}}>
-                  <span style={{color:'grey'}}>awasthishubh</span>
+                  <span style={{color:'grey'}}>{this.props.username}</span>
                 </Typography>
               </Toolbar>
               {renderMenu}

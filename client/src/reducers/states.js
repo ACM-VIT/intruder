@@ -16,13 +16,12 @@ var initQuesStatus = {
 
 var initAppStatus = {
     loggedIn: null,
-    username: '',
+    username: 'mnj',
     socket: null,
     lock: false,
     success: false,
     admin: false,
     loginErr: false,
-    username:''
 }
 
 var initWaitStatus = {

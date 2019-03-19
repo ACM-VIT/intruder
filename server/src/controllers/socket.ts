@@ -180,7 +180,9 @@ const connectionFunc = (socket): void => {
         prevScorerSocket = socket.id;
         socket.emit('messageRequired');
       }
-      console.log(currentQuestion,criticalState,prevScorer)
+      if (!initialized) {
+        socket.emit('notInitialized');
+      }
       if (currentQuestion !== null && socket.connected
         && (!criticalState || prevScorer === payload.username)) {
         socket.emit('question', currentQuestion);

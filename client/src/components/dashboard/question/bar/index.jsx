@@ -5,6 +5,8 @@ import Hidden from '@material-ui/core/Hidden';
 import { withStyles } from '@material-ui/core/styles';
 import Bar from './bar'
 import Divider from '@material-ui/core/Divider';
+import {connect} from 'react-redux'
+
 const drawerWidth = 370;
 
 const styles = theme => ({
@@ -59,7 +61,7 @@ class ResponsiveDrawer extends React.Component {
 
     return (
         <div id="leftBar" className={classes.root} >
-        <Bar onClick={this.handleDrawerToggle}/>
+        <Bar onClick={this.handleDrawerToggle} username={this.props.username}/>
         <nav className={classes.drawer} >
           <Hidden smUp implementation="css">
             <Drawer
@@ -100,4 +102,9 @@ ResponsiveDrawer.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);
+function mapStateToProps(state){
+  var {username}=state.appState
+  return({username})
+}
+
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(ResponsiveDrawer));
