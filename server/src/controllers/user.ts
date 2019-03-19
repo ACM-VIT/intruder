@@ -64,10 +64,12 @@ router.post('/login', (req: Express.Request, res: Express.Response): void => {
       error: false,
       data: { token: jwt.issueToken({ username }) },
     });
+    return null;
   }).catch(() => res.status(500).json({
     error: true,
     data: { message: 'Internal server error' },
   }));
+  return null;
 });
 
 export default router;

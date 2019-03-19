@@ -37,7 +37,7 @@ class Question {
     Question.num += 1;
   }
 
-  public checkSolution(attempt: Attempt, cb) {
+  public checkSolution(attempt: Attempt, cb): void {
     if (attempt.solution === this.solution) {
       process.stdout.write(`${attempt.username} intruded by answering Question: ${this.number}\n`);
       cb(true);
@@ -57,6 +57,7 @@ class Question {
       }).catch((err) => {
         process.stderr.write(`Error saving final state: ${err.message}\n\n`);
       });
+      return null;
     }
     cb(false);
     QuestionModel.update({ number: this.number }, {
@@ -67,6 +68,7 @@ class Question {
       process.stderr.write(`Error saving state: ${err.message}\n`);
     });
     this.attempts.push(attempt);
+    return null;
   }
 }
 
