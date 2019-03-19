@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Timmer from './timmer'
 import Question from './question'
-import { connectToSocket, setJwt, sendMsg } from '../../actions'
+import { login, setJwt, sendMsg } from '../../actions'
 import AdminPanel from './admin'
 import SuccessDialog from './successDiag'
 
@@ -48,4 +48,4 @@ function mapStateToProps(state) {
   })
 }
 
-export default connect(mapStateToProps, { connectToSocket, setJwt, sendMsg })(App)
+export default connect(mapStateToProps, { login, setJwt, sendMsg })(App)

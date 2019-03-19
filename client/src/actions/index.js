@@ -3,63 +3,48 @@ import io from 'socket.io-client';
 import baseURL from '../baseUrl';
 import axios from 'axios';
 import Cookies from 'js-cookie'
+import bindOn from './userSocketOn'
+window.io = io
 
-function connectToSocket(jwt) {
+function connectToSocket(jwt,dispatch){
+    return new Promise((resolve,reject)=>{
+        let socket = io(baseURL);
+        bindOn(socket, dispatch)
+        socket.on('connect', () => {
+            window.soc=socket
+            console.log('joining...')
+            socket.emit('join', jwt, (username) => {
+                if (username) {
+                    resolve(username,socket)
+                }
+                else {
+                    reject()
+                }
+            })
+        })
+    })
+}
+
+
+function login(jwt) {
     return (dispatch) => {
-        console.log('Connecting to socket')
-        let socket = io.connect('https://attendance-socket.herokuapp.com', { jwt });
-        dispatch({
-            type: 'SET_SOCKET',
-            payload: socket
-        })
-        socket.on('disconnect', () => {
-            Cookies.set('token', '')
-            window.location.reload()
-        })
-
-        socket.on('successMessage', function (data) {
+        dispatch({type:'SET_LOCK',payload:true})
+        connectToSocket(jwt,dispatch).then((res)=>{
             dispatch({
-                type: 'SEND_MESSAGE',
-                message: data.username,
-                messageFrom: data.message
+                type:'LOGIN_SUCCESS',
+                username:res.username
             })
-        })
-
-        socket.on('question', function (data) {
+            dispatch({type:'SET_LOCK',payload:false})
             dispatch({
-                type: 'SET_QUESTION',
-
+                type: 'SET_SOCKET',
+                payload: res.socket
             })
-        })
-
-        socket.on('criticalState', function () {
+        }).catch(()=>{
             dispatch({
-                type: 'SET_WAIT',
-                wait: true,
-                waitTime: 15,
-                message: 'Someone intruded into your login. Please wait.',
-                messageFrom: 'admin'
+                type:'SET_LOGIN_ERROR',
+                payload:true
             })
-        })
-
-        socket.on('messageRequired', function (data) {
-            dispatch({ type: 'SET_SUCCESS_STATE' })
-        })
-
-        socket.on('success', function (data) {
-            dispatch({ type: 'SET_SUCCESS_STATE' })
-        })
-
-        socket.on('ready', function (data) {
-
-        })
-
-        socket.on('intruderMessage', function (data) { //afterLogin intrude
-
-        })
-
-        socket.on('result', function (data) { //done
-
+            dispatch({type:'SET_LOCK',payload:false})
         })
     }
 }
@@ -84,18 +69,22 @@ function setJwt() {
 // socket.emit('successMessage')
 // socket.emit('join')
 
-function login(username, name) {
+function register(username, name) {
     return async (dispatch) => {
-        // try{
-        // var res=await axios.post(baseURL+'/enter',{username, name})
-        // dispatch({type: 'LOGIN_SUCCESS', payload: true})
-        // dispatch({type: 'SET_JWT', payload: res.data.data.token})
+        
+        // try {
+        console.log(baseURL + '/enter')
+        var res = await axios.post(baseURL + '/enter', { username, name })
+        console.log(res)
+        dispatch({ type: 'LOGIN_SUCCESS', payload: true })
+        dispatch({ type: 'SET_JWT', payload: res.data.data.token })
         // }
-        // catch(e){
-        //     dispatch({type: 'LOGIN_FAIL'})
-        //     dispatch({type: 'SET_ERR_MSG', payload: e.response.data.data.message})
+        // catch (e) {
+        //     console.log(e.response)
+        //     dispatch({ type: 'LOGIN_FAIL' })
+        //     dispatch({ type: 'SET_ERR_MSG', payload: e.response.data.data.message })
         // }
-        dispatch({ type: 'LOGIN_SUCCESS', jwt: 'asd' })
+        // dispatch({ type: 'LOGIN_SUCCESS', jwt: 'asd' })
     }
 }
 
@@ -154,5 +143,5 @@ function sendMsg(res) {
 }
 
 export {
-    connectToSocket, login, submitResponse, sendMsg, adminLogin, setJwt
+    register, login, submitResponse, sendMsg, adminLogin, setJwt
 }
