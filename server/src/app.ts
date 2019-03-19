@@ -19,7 +19,12 @@ registerIO();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
+app.use((req,res, next)=>{	
+  res.header("Access-Control-Allow-Origin", "*");	
+  res.header("Access-Control-Allow-Headers", "content-type, Authorization");	
+  res.header('Access-Control-Allow-Methods','GET, PUT, POST, DELETE, PATCH, OPTIONS');
+  next()
+})
 app.use('/', UserRouter);
 
 process.on('uncaughtException', (err: Error) => {

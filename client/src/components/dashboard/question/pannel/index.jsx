@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Editor from './editor'
 import Resources from './resources'
 import {connect} from 'react-redux'
-import {submitResponse,sendMsg} from '../../../../actions'
+import {submitResponse,sendMsg} from '../../../../actions/userFunc'
 require('../style.css')
 
 class App extends React.Component {

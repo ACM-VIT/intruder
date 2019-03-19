@@ -4,7 +4,7 @@ import Dashboard from './components/dashboard'
 import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { connect } from 'react-redux'
-import { reLogin } from './actions'
+import { reLogin } from './actions/connectFunc'
 const theme = createMuiTheme({
 	palette: {
 		primary: {

@@ -138,6 +138,7 @@ const connectionFunc = (socket): void => {
     return null;
   });
   socket.on('emitQuestion', (cb): void => {
+    console.log(questionsFetched, socket.id === adminId, !initialized)
     if (questionsFetched && socket.id === adminId && !initialized) {
       currentQuestion = QuestionGetter.get();
       io.emit('question', currentQuestion);
@@ -179,6 +180,7 @@ const connectionFunc = (socket): void => {
         prevScorerSocket = socket.id;
         socket.emit('messageRequired');
       }
+      console.log(currentQuestion,criticalState,prevScorer)
       if (currentQuestion !== null && socket.connected
         && (!criticalState || prevScorer === payload.username)) {
         socket.emit('question', currentQuestion);

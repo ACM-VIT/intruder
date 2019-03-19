@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Timmer from './timmer'
 import Question from './question'
-import { setJwt, sendMsg } from '../../actions'
+import { setJwt, sendMsg } from '../../actions/userFunc'
 import AdminPanel from './admin'
 import SuccessDialog from './successDiag'
 

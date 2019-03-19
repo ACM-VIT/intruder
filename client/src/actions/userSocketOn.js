@@ -78,10 +78,6 @@ export default function bindOn(socket, dispatch) {
         dispatch({ type: 'SET_SUCCESS_STATE', payload: true })
     })
 
-
-
-
-
     socket.on('result', function (data) { //done
 
     })
