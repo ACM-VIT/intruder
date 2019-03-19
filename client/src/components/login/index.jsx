@@ -3,7 +3,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { login, adminLogin, register } from '../../actions'
+import { userLogin, adminLogin, register } from '../../actions'
 import { connect } from 'react-redux'
 import Background from '../background'
 import Login from './login'
@@ -21,7 +21,8 @@ class App extends Component {
     this.state = { name: '', usid: '', login: true, admin: false }
   }
   login() {
-    this.props.login(this.state.usid)
+    console.log(userLogin)
+    this.props.userLogin(this.state.usid)
   }
   reg() {
     this.props.register(this.state.name, this.state.usid)
@@ -90,4 +91,4 @@ function mapStateToProps(state) {
     lock:state.appState.lock,
   })
 }
-export default connect(mapStateToProps, { login, adminLogin, register })(withStyles(styles)(App));
+export default connect(mapStateToProps, { userLogin, adminLogin, register })(withStyles(styles)(App));

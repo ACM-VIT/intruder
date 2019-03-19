@@ -1,4 +1,13 @@
 import Cookies from 'js-cookie'
+
+//success -----
+//successMessage
+//messageRequired
+//question
+//criticalState
+//pass
+//fail
+
 export default function bindOn(socket, dispatch) {
     console.log('registering sockets event...')
     socket.on('disconnect', () => {
@@ -18,30 +27,29 @@ export default function bindOn(socket, dispatch) {
     })
 
     socket.on('question', function (data) {
+        console.log('question',data)
         dispatch({
             type: 'SET_QUESTION',
-            
-
         })
     })
 
-    socket.on('criticalState', function () {
+    socket.on('success', function () {
         console.log('critical state...')
         dispatch({
             type: 'SET_WAIT',
             wait: true,
-            waitTime: 15,
+            waitTime: 10,
             message: 'Someone intruded into your login. Please wait.',
             messageFrom: 'admin'
         })
     })
 
-    socket.on('notInitialized',function(){
+    socket.on('criticalState',function(){
         dispatch({
             type: 'SET_WAIT',
             wait: true,
-            waitTime: 10,
-            notInit:false,
+            waitTime: 0,
+            notInit:true,
             message: 'It\'s about to start! Please wait for a few moment',
             messageFrom: 'admin'
         })
