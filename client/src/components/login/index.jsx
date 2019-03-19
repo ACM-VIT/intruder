@@ -25,7 +25,7 @@ class App extends Component {
     this.props.userLogin(this.state.usid)
   }
   reg() {
-    this.props.register(this.state.name, this.state.usid)
+    this.props.register(this.state.usid, this.state.name)
   }
   loginState() {
     this.setState({ login: !this.state.login })
@@ -53,25 +53,26 @@ class App extends Component {
               login={this.state.login}
             />
 
-            <div style={{height: 20}}>
-              <span style={{float:'left',color:'#ef5350'}}>
-                {this.props.loginErr ? 'Invalid login credentials!' : ''}
+            <div style={{ height: 20 }}>
+              <span style={{ float: 'left', color: '#ef5350' }}>
+                {this.props.loginErr ? this.props.loginErr !== true ? this.props.loginErr : 'Invalid login credentials!' : ''}
               </span>
-              <span style={{float:'right', cursor: 'pointer',color: 'rgb(49, 231, 182)' }} onClick={this.loginState.bind(this)}>
+              <span style={{ float: 'right', cursor: 'pointer', color: 'rgb(49, 231, 182)' }} onClick={this.loginState.bind(this)}>
                 {this.state.admin ? '' : this.state.login ? 'Register?' : 'Login?'}
               </span>
             </div>
           </CardContent>
           <div
-            style={{ cursor: 'pointer', padding: 20, fontSize: 20, fontWeight: 900, 
-              color: 'rgb(55, 61, 65)', 
-              background: this.props.lock?'#9e9e9e':'rgb(49, 231, 182)', 
+            style={{
+              cursor: 'pointer', padding: 20, fontSize: 20, fontWeight: 900,
+              color: 'rgb(55, 61, 65)',
+              background: this.props.lock ? '#9e9e9e' : 'rgb(49, 231, 182)',
               textAlign: 'center',
-              pointerEvents:this.props.lock?'none':'auto'
+              pointerEvents: this.props.lock ? 'none' : 'auto'
             }}
             onClick={this.state.admin ? this.adminLogin.bind(this) : this.state.login ? this.login.bind(this) : this.reg.bind(this)}
           >
-            {this.props.lock?'Logging in...':this.state.admin ? 'Admin Login' : this.state.login ? 'Login' : 'Register'}
+            {this.props.lock ? 'Logging in...' : this.state.admin ? 'Admin Login' : this.state.login ? 'Login' : 'Register'}
           </div>
         </Card>
       </Background>
@@ -87,8 +88,8 @@ App.propTypes = {
 function mapStateToProps(state) {
   return ({
     loggedIn: state.appState.loggedIn,
-    loginErr:state.appState.loginErr,
-    lock:state.appState.lock,
+    loginErr: state.appState.loginErr,
+    lock: state.appState.lock,
   })
 }
 export default connect(mapStateToProps, { userLogin, adminLogin, register })(withStyles(styles)(App));

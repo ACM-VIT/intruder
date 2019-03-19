@@ -182,20 +182,24 @@ function setJwt() {
 
 function register(username, name) {
     return async (dispatch) => {
-
-        // try {
-        console.log(baseURL + '/enter')
-        var res = await axios.post(baseURL + '/enter', { username, name })
-        console.log(res)
-        dispatch({ type: 'LOGIN_SUCCESS', payload: true })
-        dispatch({ type: 'SET_JWT', payload: res.data.data.token })
-        // }
-        // catch (e) {
-        //     console.log(e.response)
-        //     dispatch({ type: 'LOGIN_FAIL' })
-        //     dispatch({ type: 'SET_ERR_MSG', payload: e.response.data.data.message })
-        // }
-        // dispatch({ type: 'LOGIN_SUCCESS', jwt: 'asd' })
+        try {
+            console.log(baseURL + '/enter')
+            var res = await axios.post(baseURL + '/enter', { username, name })
+            Cookies.set('userToken', res.data.data.token)
+            Cookies.set('type', 'user')
+            userReLogin(dispatch)
+        }
+        catch (e) {
+            try {
+                dispatch({
+                    type: 'SET_LOGIN_ERROR',
+                    payload: e.response.data.data.message
+                })
+            }catch(e){
+                alert()
+                console.error(e)
+            }
+        }
     }
 }
 
@@ -211,22 +215,22 @@ function submitResponse(res) {
         //     message: 'hello hello',
         //     messageFrom: 'shubham'
         // })
-        setTimeout(() => {
-            console.log('setSucces')
-            dispatch({
-                type: 'SET_SUCCESS_STATE',
-                payload: true
-            })
-        }, 3000)
+        // setTimeout(() => {
+        //     console.log('setSucces')
+        //     dispatch({
+        //         type: 'SET_SUCCESS_STATE',
+        //         payload: true
+        //     })
+        // }, 3000)
 
-        setTimeout(() => {
-            console.log('sending message')
-            dispatch({
-                type: 'SEND_MESSAGE',
-                message: 'hello hello',
-                messageFrom: 'shubham'
-            })
-        }, 1000)
+        // setTimeout(() => {
+        //     console.log('sending message')
+        //     dispatch({
+        //         type: 'SEND_MESSAGE',
+        //         message: 'hello hello',
+        //         messageFrom: 'shubham'
+        //     })
+        // }, 1000)
     }
 }
 
