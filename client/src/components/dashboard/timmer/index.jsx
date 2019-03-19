@@ -31,6 +31,7 @@ class App extends Component {
           totalSec={this.state.totalSec} 
           sec={this.state.sec>0?this.state.sec:0} 
           done={this.state.done}
+          notInit={this.props.notInit}
         />
       </Background>
     );
@@ -38,8 +39,8 @@ class App extends Component {
 }
 
 function mapStateToProps(state){
-  var {waitTime,message,messageFrom}=state.waitState
-  return({waitTime,message,messageFrom})
+  var {waitTime,message,messageFrom,notInit}=state.waitState
+  return({waitTime,message,messageFrom,notInit})
 }
 
 export default connect(mapStateToProps)(App)

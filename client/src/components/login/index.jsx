@@ -3,7 +3,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { login, adminLogin } from '../../actions'
+import { login, adminLogin, register } from '../../actions'
 import { connect } from 'react-redux'
 import Background from '../background'
 import Login from './login'
@@ -21,10 +21,10 @@ class App extends Component {
     this.state = { name: '', usid: '', login: true, admin: false }
   }
   login() {
-    this.props.login(this.state.name, this.state.usid)
+    this.props.login(this.state.usid)
   }
   reg() {
-    this.props.login(this.state.usid)
+    this.props.register(this.state.name, this.state.usid)
   }
   loginState() {
     this.setState({ login: !this.state.login })
@@ -52,15 +52,25 @@ class App extends Component {
               login={this.state.login}
             />
 
-            <div style={{ color: 'rgb(49, 231, 182)', textAlign: 'right', height: 20 }}><span style={{ cursor: 'pointer' }} onClick={this.loginState.bind(this)}>
-              {this.state.admin ? '' : this.state.login ? 'Register?' : 'Login?'}
-            </span></div>
+            <div style={{height: 20}}>
+              <span style={{float:'left',color:'#ef5350'}}>
+                {this.props.loginErr ? 'Invalid login credentials!' : ''}
+              </span>
+              <span style={{float:'right', cursor: 'pointer',color: 'rgb(49, 231, 182)' }} onClick={this.loginState.bind(this)}>
+                {this.state.admin ? '' : this.state.login ? 'Register?' : 'Login?'}
+              </span>
+            </div>
           </CardContent>
           <div
-            style={{ cursor: 'pointer', padding: 20, fontSize: 20, fontWeight: 900, color: 'rgb(55, 61, 65)', background: 'rgb(49, 231, 182)', textAlign: 'center' }}
+            style={{ cursor: 'pointer', padding: 20, fontSize: 20, fontWeight: 900, 
+              color: 'rgb(55, 61, 65)', 
+              background: this.props.lock?'#9e9e9e':'rgb(49, 231, 182)', 
+              textAlign: 'center',
+              pointerEvents:this.props.lock?'none':'auto'
+            }}
             onClick={this.state.admin ? this.adminLogin.bind(this) : this.state.login ? this.login.bind(this) : this.reg.bind(this)}
           >
-            {this.state.admin ? 'Admin Login' : this.state.login ? 'Login' : 'Register'}
+            {this.props.lock?'Logging in...':this.state.admin ? 'Admin Login' : this.state.login ? 'Login' : 'Register'}
           </div>
         </Card>
       </Background>
@@ -74,6 +84,10 @@ App.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return ({ loggedIn: state.appState.loggedIn })
+  return ({
+    loggedIn: state.appState.loggedIn,
+    loginErr:state.appState.loginErr,
+    lock:state.appState.lock,
+  })
 }
-export default connect(mapStateToProps, { login, adminLogin })(withStyles(styles)(App));
+export default connect(mapStateToProps, { login, adminLogin, register })(withStyles(styles)(App));

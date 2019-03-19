@@ -1,1 +1,1 @@
-export default 'https://localhost'
+export default 'http://localhost:3000'

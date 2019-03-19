@@ -41,29 +41,30 @@ class CircularIntegration extends React.Component {
 
   render() {
     const { classes } = this.props;
-    
-    var animateClass=this.props.sec>3?'':this.props.done?' animated infinite pulse':' animated infinite tada'
+
+    var animateClass = this.props.sec > 3 ? '' : this.props.done ? ' animated infinite pulse' : ' animated infinite tada'
 
     return (
-      <div className={classes.root} style={{flexDirection:'column'}}>
-        <div style={{color:'#fff',fontWeight:900,marginBottom:10,fontSize:30,height:40}}>
-          {!this.props.done?'Wait for':''}
-          </div>
-        <div style={{margin:'auto'}} className={classes.wrapper+animateClass}>
-          <Fab style={{ height: 200, width: 200, backgroundColor:'#454545'}}>
-            <div style={{fontSize:80, color:'#fff'}}>{Math.floor(this.props.sec)}</div>
+      <div className={classes.root} style={{ flexDirection: 'column' }}>
+        <div style={{ color: '#fff', fontWeight: 900, marginBottom: 10, fontSize: 30, height: 40 }}>
+          {this.props.notInit ? 'Please wait' : !this.props.done ? 'Wait for' : ''}
+        </div>
+        <div style={{ margin: 'auto' }} className={classes.wrapper + animateClass}>
+          <Fab style={{ height: 200, width: 200, backgroundColor: '#454545' }}>
+            <div style={{ fontSize: 80, color: '#fff' }}>
+              {this.props.notInit ? '∞' : Math.floor(this.props.sec)}
+            </div>
           </Fab>
-          <CircularProgress 
-            style={{color:'#31e7b6'}}
-            size={210} 
-            className={classes.fabProgress} 
+          <CircularProgress
+            style={{ color: '#31e7b6' }}
+            size={210}
+            className={classes.fabProgress}
             variant="static"
-            value={this.props.sec*100/this.props.totalSec}
-
+            value={this.props.sec * 100 / this.props.totalSec}
           />
         </div>
-        <div style={{color:'#fff',fontWeight:900,marginTop:10,fontSize:30,height:40}}>
-          {this.props.done?'Requesting question...':'Seconds'}
+        <div style={{ color: '#fff', fontWeight: 900, marginTop: 10, fontSize: 30, height: 40 }}>
+          {this.props.notInit ? 'We are about to start.' : this.props.done ? 'Requesting question...' : 'Seconds'}
         </div>
       </div>
     );
