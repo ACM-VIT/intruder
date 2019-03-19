@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY package.json /app
 
+RUN npm config set unsafe-perm true
+
 RUN npm i typescript -g && \
 npm install
 
