@@ -2,29 +2,25 @@ import React from 'react'
 import SideBar from './question/bar'
 import './question/style.css'
 import Button from '@material-ui/core/Button';
-import AceEditor from 'react-ace';
-import 'brace/mode/asciidoc.js';
-import 'brace/theme/twilight';
-
+// import AceEditor from 'react-ace';
+// import 'brace/mode/asciidoc.js';
+// import 'brace/theme/twilight';
+import { skip, emitQuestion } from '../../actions/adminFunc'
+import { connect } from 'react-redux'
 class App extends React.Component {
     render() {
         return (
             <div>
                 <SideBar />
                 <div id="panel" style={{ paddingTop: 20 }}>
-                    <Button variant="contained" color="primary">
-                        Admin Action
+                    <Button variant="contained" color="primary" onClick={()=>this.props.emitQuestion(this.props.socket)}>
+                        Emit Question
                     </Button>
-                    <Button variant="contained" color="primary">
-                        Admin Action
-                    </Button><Button variant="contained" color="primary">
-                        Admin Action
-                    </Button><Button variant="contained" color="primary">
-                        Admin Action
+                    <Button variant="contained" color="primary" onClick={()=>this.props.skip(this.props.socket)}>
+                        Skip Question
                     </Button>
-
                     <br /><br />
-                    <AceEditor
+                    {/* <AceEditor
                         cursor="slim"
                         mode="asciidoc"
                         fontSize={16}
@@ -39,11 +35,18 @@ class App extends React.Component {
                             editor.getSession().setUseWrapMode(true);
                             editor.setReadOnly(true)
                         }}
-                    />
+                    /> */}
                 </div>
             </div>
         )
     }
 }
 
-export default App
+function mapStateToProps(state){
+    console.log(state)
+    return({
+        socket:state.appState.socket
+    })
+}
+
+export default connect(mapStateToProps, { skip, emitQuestion })(App)

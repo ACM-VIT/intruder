@@ -21,7 +21,7 @@ class App extends React.Component {
     }
 
     submit(){
-        this.props.submitResponse(this.state.editorVal)
+        this.props.submitResponse(this.props.socket,this.state.editorVal)
     }
 
     render(){
@@ -83,8 +83,8 @@ class App extends React.Component {
 
 function mapStateToProps(state){
     var {ques,img,audio,video,cipher,txt}=state.quesState
-    var {lock,success}=state.appState
-    return({ques,img,audio,video,cipher,txt,lock,success})
+    var {lock,success,socket}=state.appState
+    return({ques,img,audio,video,cipher,txt,lock,success,socket})
 }
 
 export default connect(mapStateToProps,{submitResponse,sendMsg})(App)

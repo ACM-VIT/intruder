@@ -15,56 +15,28 @@ function setJwt() {
     }
 }
 
-// socket.emit('adminLogin') //admin
-// socket.emit('emitQuestion') // admin
 // socket.emit('submit')
 // socket.emit('successMessage')
 // socket.emit('join')
 
 
 
-function submitResponse(res) {
+function submitResponse(socket,res) {
     return (dispatch) => {
-        console.log('submitting...', res)
-        dispatch({
-            type: 'WAIT_STATUS',
-            payload: true
-        })
-        // dispatch({
-        //     type: 'SEND_MESSAGE',
-        //     message: 'hello hello',
-        //     messageFrom: 'shubham'
-        // })
-        // setTimeout(() => {
-        //     console.log('setSucces')
-        //     dispatch({
-        //         type: 'SET_SUCCESS_STATE',
-        //         payload: true
-        //     })
-        // }, 3000)
-
-        // setTimeout(() => {
-        //     console.log('sending message')
-        //     dispatch({
-        //         type: 'SEND_MESSAGE',
-        //         message: 'hello hello',
-        //         messageFrom: 'shubham'
-        //     })
-        // }, 1000)
+        dispatch({ type: 'SET_LOCK', payload: true })
+        socket.emit('submit',res)
     }
 }
 
 
 
-function sendMsg(res) {
+function sendMsg(socket,res) {
     return (dispatch) => {
-        console.log('submitting...', res)
+        dispatch({ type: 'SET_LOCK', payload: true })
+        socket.emit('successMessage',res)
         dispatch({
-            type: 'SET_SUCCESS_STATE',
-            payload: false
-        })
-        dispatch({
-            type: 'SUCCESS_WAIT',
+            type:'SET_SUCCESS_STATE',
+            payload:false
         })
     }
 }

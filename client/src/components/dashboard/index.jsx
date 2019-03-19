@@ -32,7 +32,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        {this.props.success ? <SuccessDialog open={this.props.success} sendMsg={this.props.sendMsg} /> : <div />}
+        {this.props.success ? 
+          <SuccessDialog open={this.props.success} socket={this.props.socket} sendMsg={this.props.sendMsg} /> 
+          : <div />}
         {this.renderElem()}
       </div>
     )

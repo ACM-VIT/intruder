@@ -11,6 +11,7 @@ var cid
 export default function bindOn(socket, dispatch) {
     console.log('registering sockets event...')
     socket.on('disconnect', () => {
+        console.log('%cdisconnectng','background: #222; color: #bada55');
         Cookies.set('token', '')
         dispatch({
             type: 'SET_SOCKET',
@@ -19,6 +20,7 @@ export default function bindOn(socket, dispatch) {
     })
 
     socket.on('criticalState', function () {
+        console.log('%ccriticalState','background: #222; color: #bada55');
         dispatch({
             type: 'SET_WAIT',
             wait: true,
@@ -30,15 +32,24 @@ export default function bindOn(socket, dispatch) {
     })
 
     socket.on('question', function (data) {
-        dispatch({ type: 'SET_LOCK', payload: false })
+        console.log('%cquestion','background: #222; color: #bada55');
+        var { img, audio, video, cipher, statement } = data.content
         console.log('question', data)
+        dispatch({ type: 'SET_LOCK', payload: false })
+        dispatch({ type: 'SET_WAIT', wait: false })
         dispatch({
             type: 'SET_QUESTION',
+            payload: {
+                qid: data.number,
+                ques: statement,
+                img, audio, video, cipher
+            }
         })
     })
 
     socket.on('success', function () {
-        dispatch({type:'SET_QUESTION',payload:{}})
+        console.log('%csuccess','background: #222; color: #bada55');
+        dispatch({ type: 'SET_QUESTION', payload: {} })
         dispatch({
             type: 'SET_WAIT',
             wait: true,
@@ -49,14 +60,16 @@ export default function bindOn(socket, dispatch) {
     })
 
     socket.on('successMessage', function (data) {
+        console.log('%csuccessMessage','background: #222; color: #bada55');
         dispatch({
             type: 'SEND_MESSAGE',
-            message: data.username,
-            messageFrom: data.message
+            message: data.message,
+            messageFrom: data.username
         })
     })
 
     socket.on('fail', function (data) {
+        console.log('%cfail','background: #222; color: #bada55');
         dispatch({ type: 'SET_LOCK', payload: false })
         dispatch({
             type: 'SET_WAIT',
@@ -65,7 +78,7 @@ export default function bindOn(socket, dispatch) {
             message: null,
             messageFrom: null
         })
-        cid=setTimeout(() => {
+        cid = setTimeout(() => {
             dispatch({
                 type: 'SET_WAIT',
                 wait: false
@@ -74,6 +87,7 @@ export default function bindOn(socket, dispatch) {
     })
 
     socket.on('pass', function (data) {
+        console.log('%cpass','background: #222; color: #bada55');
         dispatch({ type: 'SET_LOCK', payload: true })
         dispatch({ type: 'SET_SUCCESS_STATE', payload: true })
     })

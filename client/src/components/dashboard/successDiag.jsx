@@ -23,7 +23,7 @@ export default class FormDialog extends React.Component {
     value:''
   };
   submit(){
-    this.props.sendMsg(this.state.value)
+    this.props.sendMsg(this.props.socket, this.state.value)
   }
  
   render() {

@@ -14,7 +14,15 @@ function connectToUserSocket(jwt, dispatch) {
             console.log('joining...')
             socket.emit('join', jwt, (username) => {
                 if (username) {
-                    resolve(username, socket)
+                    dispatch({
+                        type: 'SET_SOCKET',
+                        payload: socket
+                    })
+                    dispatch({
+                        type: 'LOGIN_SUCCESS',
+                        username: username
+                    })
+                    resolve(socket, username)
                 }
                 else {
                     reject('invalid login')
@@ -33,6 +41,10 @@ function connectToAdminSocket(token, dispatch) {
             console.log('Adminjoining...')
             socket.emit('adminLogin', token, (success) => {
                 if (success) {
+                    dispatch({
+                        type: 'SET_SOCKET',
+                        payload: socket
+                    })
                     resolve(socket)
                 }
                 else {
@@ -47,18 +59,10 @@ function connectToAdminSocket(token, dispatch) {
 function userLogin(jwt) {
     return (dispatch) => {
         dispatch({ type: 'SET_LOCK', payload: true })
-        connectToUserSocket(jwt, dispatch).then((res) => {
+        connectToUserSocket(jwt, dispatch).then(() => {
             Cookies.set('userToken', jwt)
             Cookies.set('type', 'user')
-            dispatch({
-                type: 'LOGIN_SUCCESS',
-                username: res.username
-            })
             dispatch({ type: 'SET_LOCK', payload: false })
-            dispatch({
-                type: 'SET_SOCKET',
-                payload: res.socket
-            })
         }).catch(() => {
             dispatch({
                 type: 'SET_LOGIN_ERROR',
@@ -72,15 +76,7 @@ function userLogin(jwt) {
 function userReLogin(dispatch) {
     var token = Cookies.get('userToken')
     if (token) {
-        connectToUserSocket(token, dispatch).then((res) => {
-            dispatch({
-                type: 'LOGIN_SUCCESS',
-                username: res.username
-            })
-            dispatch({
-                type: 'SET_SOCKET',
-                payload: res.socket
-            })
+        connectToUserSocket(token, dispatch).then(() => {
         }).catch(() => {
             dispatch({
                 type: 'LOGOUT_USER',
@@ -97,17 +93,13 @@ function userReLogin(dispatch) {
 function adminLogin(token) {
     return (dispatch) => {
         dispatch({ type: 'SET_LOCK', payload: true })
-        connectToAdminSocket(token, dispatch).then((res) => {
+        connectToAdminSocket(token, dispatch).then(() => {
             Cookies.set('adminToken', token)
             Cookies.set('type', 'admin')
             dispatch({
                 type: 'ADMIN_LOGGED_IN'
             })
             dispatch({ type: 'SET_LOCK', payload: false })
-            dispatch({
-                type: 'SET_SOCKET',
-                payload: res.socket
-            })
         }).catch(() => {
             dispatch({
                 type: 'SET_LOGIN_ERROR',
@@ -121,13 +113,9 @@ function adminLogin(token) {
 function adminReLogin(dispatch) {
     var token = Cookies.get('adminToken')
     if (token) {
-        connectToAdminSocket(token, dispatch).then((res) => {
+        connectToAdminSocket(token, dispatch).then(() => {
             dispatch({
                 type: 'ADMIN_LOGGED_IN',
-            })
-            dispatch({
-                type: 'SET_SOCKET',
-                payload: res.socket
             })
         }).catch((e) => {
             console.log(e)
@@ -173,7 +161,7 @@ function register(username, name) {
                     type: 'SET_LOGIN_ERROR',
                     payload: e.response.data.data.message
                 })
-            }catch(e){
+            } catch (e) {
                 alert()
                 console.error(e)
             }
@@ -182,5 +170,5 @@ function register(username, name) {
 }
 
 export {
-    register,userLogin,adminLogin,reLogin
+    register, userLogin, adminLogin, reLogin
 }
