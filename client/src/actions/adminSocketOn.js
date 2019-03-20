@@ -20,6 +20,7 @@ function sortFu(a,b){
 }
 
 function pResult(data){
+    if(typeof(data==='string')) return "'"+data+"'";
     var str='/*--------------------*/Result/*--------------------*/\n\n'
     str+=`\t${equalSpace('Rank',7)}${equalSpace(';',5)}${equalSpace('score',10)}${equalSpace(';',5)}${equalSpace('Username',30)}${equalSpace(';',5)}Name\n\n`
     data.forEach((teams,i)=>{

@@ -11,16 +11,17 @@ import Switch from '@material-ui/core/Switch';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: '', usid: '', login: true, admin: true, pass: '', stats:false }
+    this.state = { name: '', usid: '', login: true, admin: false, pass: '', stats:false }
   }
   statsSwitch(){
     this.setState({ stats: !this.state.stats })
   }
-  login() {
-    console.log(userLogin)
+  login(e) {
+    e.preventDefault()
     this.props.userLogin(this.state.usid, this.state.pass)
   }
-  reg() {
+  reg(e) {
+    e.preventDefault()
     this.props.register(this.state.usid, this.state.name, this.state.pass)
   }
   loginState() {
@@ -29,13 +30,15 @@ class App extends Component {
   adminSwitch() {
     this.setState({ admin: !this.state.admin })
   }
-  adminLogin() {
+  adminLogin(e) {
+    e.preventDefault()
     this.props.adminLogin(this.state.usid,this.state.stats)
   }
   render() {
     return (
       <Background title="Intruder">
         <Card className="animated fadeInLeft" style={{ width: '100%', maxWidth: '400px', color: '#fff', background: 'rgb(69, 69, 69)' }}>
+        <form onSubmit={this.state.admin ? this.adminLogin.bind(this) : this.state.login ? this.login.bind(this) : this.reg.bind(this)}>
           <CardContent style={{ color: '#fff' }}>
             <div style={{ color: 'rgb(49, 231, 182)', textAlign: 'left' }}><span style={{ cursor: 'pointer' }} onClick={this.adminSwitch.bind(this)}>
               {this.state.admin ? 'User?' : 'Admin?'}
@@ -64,18 +67,20 @@ class App extends Component {
               </span>
             </div>
           </CardContent>
-          <div
+          <button type='submit'
             style={{
+              width:'100%',
+              border:0,
               cursor: 'pointer', padding: 20, fontSize: 20, fontWeight: 900,
               color: 'rgb(55, 61, 65)',
               background: this.props.lock ? '#9e9e9e' : 'rgb(49, 231, 182)',
               textAlign: 'center',
               pointerEvents: this.props.lock ? 'none' : 'auto'
             }}
-            onClick={this.state.admin ? this.adminLogin.bind(this) : this.state.login ? this.login.bind(this) : this.reg.bind(this)}
           >
             {this.props.lock ? 'Logging in...' : this.state.admin ? 'Admin Login' : this.state.login ? 'Login' : 'Register'}
-          </div>
+          </button>
+          </form>
         </Card>
       </Background>
 
