@@ -25,7 +25,6 @@ class Question {
 
   public constructor(cb: (b: boolean) => void) {
     QuestionModel.findOne({ number: Question.num + 1 as number }).then((que: any) => {
-      console.log(que)
       this.content = que.content;
       this.number = que.number;
       this.solution = que.solution;

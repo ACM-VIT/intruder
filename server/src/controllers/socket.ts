@@ -138,7 +138,6 @@ const connectionFunc = (socket): void => {
     return null;
   });
   socket.on('emitQuestion', (cb): void => {
-    console.log(questionsFetched, socket.id === adminId, !initialized)
     if (questionsFetched && socket.id === adminId && !initialized) {
       currentQuestion = QuestionGetter.get();
       io.emit('question', currentQuestion);
