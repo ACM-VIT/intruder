@@ -3,6 +3,7 @@ import baseURL from '../baseUrl';
 import axios from 'axios';
 import Cookies from 'js-cookie'
 import bindOn from './userSocketOn'
+import StatsBindOn from './adminSocketOn'
 window.io = io
 
 function connectToUserSocket(jwt, dispatch) {
@@ -32,14 +33,15 @@ function connectToUserSocket(jwt, dispatch) {
     })
 }
 
-function connectToAdminSocket(token, dispatch) {
+function connectToAdminSocket(token, dispatch, isStats) {
     return new Promise((resolve, reject) => {
         let socket = io(baseURL);
         socket.on('connect', () => {
-            bindOn(socket, dispatch)
+            if(isStats) StatsBindOn(socket, dispatch);
             window.soc = socket
             console.log('Adminjoining...')
-            socket.emit('adminLogin', token, (success) => {
+            socket.emit( isStats?'statsListenerLogin':'adminLogin', token, (success) => {
+                console.log(success)
                 if (success) {
                     dispatch({
                         type: 'SET_SOCKET',
@@ -56,20 +58,31 @@ function connectToAdminSocket(token, dispatch) {
 }
 
 
-function userLogin(jwt) {
-    return (dispatch) => {
+function userLogin(username, passcode) {
+    return async (dispatch) => {
         dispatch({ type: 'SET_LOCK', payload: true })
-        connectToUserSocket(jwt, dispatch).then(() => {
-            Cookies.set('userToken', jwt)
-            Cookies.set('type', 'user')
-            dispatch({ type: 'SET_LOCK', payload: false })
-        }).catch(() => {
-            dispatch({
-                type: 'SET_LOGIN_ERROR',
-                payload: true
+        try {
+            var res = await axios.post(baseURL + '/login', { username, passcode })
+            connectToUserSocket(res.data.data.token, dispatch).then(() => {
+                Cookies.set('userToken', res.data.data.token)
+                Cookies.set('type', 'user')
+                dispatch({ type: 'SET_LOCK', payload: false })
             })
+        }
+        catch (e) {
             dispatch({ type: 'SET_LOCK', payload: false })
-        })
+            try {
+                dispatch({
+                    type: 'SET_LOGIN_ERROR',
+                    payload: e.response.data.data.message
+                })
+            } catch (e) {
+                dispatch({
+                    type: 'SET_LOGIN_ERROR',
+                    payload: true
+                })
+            }
+        }
     }
 }
 
@@ -90,14 +103,14 @@ function userReLogin(dispatch) {
     }
 }
 
-function adminLogin(token) {
+function adminLogin(token, isStats) {
     return (dispatch) => {
         dispatch({ type: 'SET_LOCK', payload: true })
-        connectToAdminSocket(token, dispatch).then(() => {
+        connectToAdminSocket(token, dispatch, isStats).then(() => {
             Cookies.set('adminToken', token)
-            Cookies.set('type', 'admin')
+            Cookies.set('type', isStats ? 'stats' : 'admin')
             dispatch({
-                type: 'ADMIN_LOGGED_IN'
+                type: isStats?'STATS_LOGGED_IN':'ADMIN_LOGGED_IN'
             })
             dispatch({ type: 'SET_LOCK', payload: false })
         }).catch(() => {
@@ -110,12 +123,12 @@ function adminLogin(token) {
     }
 }
 
-function adminReLogin(dispatch) {
+function adminReLogin(dispatch, isStats) {
     var token = Cookies.get('adminToken')
     if (token) {
-        connectToAdminSocket(token, dispatch).then(() => {
+        connectToAdminSocket(token, dispatch, isStats).then(() => {
             dispatch({
-                type: 'ADMIN_LOGGED_IN',
+                type: isStats?'STATS_LOGGED_IN':'ADMIN_LOGGED_IN'
             })
         }).catch((e) => {
             console.log(e)
@@ -133,12 +146,14 @@ function adminReLogin(dispatch) {
 
 function reLogin() {
     return (dispatch) => {
-        if (Cookies.get('type') == 'user') {
+        if (Cookies.get('type') === 'user') {
             console.log('user relogin...')
             userReLogin(dispatch);
         }
-        else if (Cookies.get('type') == 'admin')
+        else if (Cookies.get('type') === 'admin')
             adminReLogin(dispatch);
+        else if (Cookies.get('type') === 'stats')
+            adminReLogin(dispatch,true);
         else {
             console.log('loggg')
             dispatch({ type: 'LOGOUT_USER' })
@@ -146,24 +161,30 @@ function reLogin() {
     }
 }
 
-function register(username, name) {
+function register(username, name, passcode) {
     return async (dispatch) => {
         try {
+            dispatch({ type: 'SET_LOCK', payload: true })
             console.log(baseURL + '/enter')
-            var res = await axios.post(baseURL + '/enter', { username, name })
+            console.log({ username, name, passcode })
+            var res = await axios.post(baseURL + '/enter', { username, name, passcode })
             Cookies.set('userToken', res.data.data.token)
             Cookies.set('type', 'user')
             userReLogin(dispatch)
+            dispatch({ type: 'SET_LOCK', payload: false })
         }
         catch (e) {
+            dispatch({ type: 'SET_LOCK', payload: false })
             try {
                 dispatch({
                     type: 'SET_LOGIN_ERROR',
                     payload: e.response.data.data.message
                 })
             } catch (e) {
-                alert()
-                console.error(e)
+                dispatch({
+                    type: 'SET_LOGIN_ERROR',
+                    payload: true
+                })
             }
         }
     }

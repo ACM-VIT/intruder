@@ -22,6 +22,8 @@ var initAppStatus = {
     success: false,
     admin: false,
     loginErr: false,
+    statsConsoleVal: '',
+    statsListen: false
 }
 
 var initWaitStatus = {
@@ -66,6 +68,10 @@ function appState(state = initAppStatus, action) {
             return { ...state, lock: action.payload }
         case 'SET_SOCKET':
             return { ...state, socket: action.payload }
+        case 'SET_STATS_VALUE':
+            return { ...state, statsConsoleVal: `${state.statsConsoleVal}\n${action.payload}\n` }
+        case 'STATS_LOGGED_IN':
+            return { ...state, statsListen: true, loggedIn: true }
         default:
             return state
     }
