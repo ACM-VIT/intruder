@@ -40,6 +40,22 @@ function App(props){
                 }
             }}
         />
+        {
+        !props.admin?
+        <TextField
+            value={props.pass}
+            onChange={(e)=>props.setState({pass:e.target.value})}
+            label="Passcode"
+            type="password"
+            margin="normal"
+            variant="outlined"
+            style={{width:'100%'}}
+            InputProps={{
+                classes: {
+                    input: props.classes.multilineColor,
+                }
+            }}
+        />:<span/>}
         </div>
     )
 }

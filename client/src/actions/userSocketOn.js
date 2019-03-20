@@ -84,6 +84,7 @@ export default function bindOn(socket, dispatch) {
                 wait: false
             })
         }, 5000)
+        console.log(cid)
     })
 
     socket.on('pass', function (data) {

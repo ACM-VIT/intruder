@@ -2,30 +2,26 @@ import React, { Component } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import { userLogin, adminLogin, register } from '../../actions/connectFunc'
 import { connect } from 'react-redux'
 import Background from '../background'
-import Login from './login'
-import Reg from './reg'
-
-const styles = theme => ({
-  multilineColor: {
-    color: 'rgb(49, 231, 182)',
-  },
-})
+import TextField from './login'
+import Switch from '@material-ui/core/Switch';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: '', usid: '', login: true, admin: false }
+    this.state = { name: '', usid: '', login: true, admin: true, pass: '', stats:false }
+  }
+  statsSwitch(){
+    this.setState({ stats: !this.state.stats })
   }
   login() {
     console.log(userLogin)
-    this.props.userLogin(this.state.usid)
+    this.props.userLogin(this.state.usid, this.state.pass)
   }
   reg() {
-    this.props.register(this.state.usid, this.state.name)
+    this.props.register(this.state.usid, this.state.name, this.state.pass)
   }
   loginState() {
     this.setState({ login: !this.state.login })
@@ -34,10 +30,9 @@ class App extends Component {
     this.setState({ admin: !this.state.admin })
   }
   adminLogin() {
-    this.props.adminLogin(this.state.usid)
+    this.props.adminLogin(this.state.usid,this.state.stats)
   }
   render() {
-    const { classes } = this.props;
     return (
       <Background title="Intruder">
         <Card className="animated fadeInLeft" style={{ width: '100%', maxWidth: '400px', color: '#fff', background: 'rgb(69, 69, 69)' }}>
@@ -45,12 +40,13 @@ class App extends Component {
             <div style={{ color: 'rgb(49, 231, 182)', textAlign: 'left' }}><span style={{ cursor: 'pointer' }} onClick={this.adminSwitch.bind(this)}>
               {this.state.admin ? 'User?' : 'Admin?'}
             </span></div>
-            <Login
+            <TextField
               setState={(e) => this.setState(e)}
               usid={this.state.usid}
               name={this.state.name}
               admin={this.state.admin}
               login={this.state.login}
+              pass={this.state.pass}
             />
 
             <div style={{ height: 20 }}>
@@ -58,7 +54,13 @@ class App extends Component {
                 {this.props.loginErr ? this.props.loginErr !== true ? this.props.loginErr : 'Invalid login credentials!' : ''}
               </span>
               <span style={{ float: 'right', cursor: 'pointer', color: 'rgb(49, 231, 182)' }} onClick={this.loginState.bind(this)}>
-                {this.state.admin ? '' : this.state.login ? 'Register?' : 'Login?'}
+                {this.state.admin ? <span><Switch
+                  checked={this.state.stats}
+                  onChange={this.statsSwitch.bind(this)}
+                  style={{height:30}}
+                  value="checkedB"
+                  color="primary"
+                />Stats</span> : this.state.login ? 'Register?' : 'Login?'}
               </span>
             </div>
           </CardContent>
@@ -92,4 +94,4 @@ function mapStateToProps(state) {
     lock: state.appState.lock,
   })
 }
-export default connect(mapStateToProps, { userLogin, adminLogin, register })(withStyles(styles)(App));
+export default connect(mapStateToProps, { userLogin, adminLogin, register })(App);

@@ -34,10 +34,6 @@ class App extends React.Component {
 
     }
     render() {
-      const options = {
-        selectOnLineNumbers: true,
-        wordWrap:'on'
-      };
       return (
         <AceEditor
           cursor="slim"

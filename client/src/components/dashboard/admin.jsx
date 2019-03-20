@@ -11,12 +11,12 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <SideBar />
-                <div id="panel" style={{ paddingTop: 20 }}>
-                    <Button variant="contained" color="primary" onClick={()=>this.props.emitQuestion(this.props.socket)}>
+                <SideBar admin />
+                <div id="panel" style={{ paddingTop: 40 }}>
+                    <Button variant="contained" color="primary" onClick={() => this.props.emitQuestion(this.props.socket)}>
                         Emit Question
                     </Button>
-                    <Button variant="contained" color="primary" onClick={()=>this.props.skip(this.props.socket)}>
+                    <Button variant="contained" color="primary" onClick={() => this.props.skip(this.props.socket)}>
                         Skip Question
                     </Button>
                     <br /><br />
@@ -42,10 +42,10 @@ class App extends React.Component {
     }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
     console.log(state)
-    return({
-        socket:state.appState.socket
+    return ({
+        socket: state.appState.socket
     })
 }
 

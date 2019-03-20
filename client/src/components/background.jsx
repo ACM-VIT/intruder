@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 var maskRight=require('../resources/Asset_1.svg')
 
 var style = {
