@@ -6,6 +6,12 @@ import 'brace/mode/javascript';
 import 'brace/theme/twilight';
 import { connect } from 'react-redux'
 class App extends React.Component {
+    componentDidUpdate(){
+        this.refs.editRef.editor.focus()
+        var row = this.refs.editRef.editor.session.getLength() - 1
+        var column = this.refs.editRef.editor.session.getLine(row).length // or simply Infinity
+        this.refs.editRef.editor.gotoLine(row + 1, column)
+    }
     render() {
         return (
             <div>
@@ -13,9 +19,10 @@ class App extends React.Component {
                 <div style={{ paddingTop: 40 }}>
                     <br /><br />
                     <AceEditor
+                        ref='editRef'
                         cursor="slim"
                         mode="javascript"
-                        fontSize={16}
+                        fontSize={22}
                         height='calc(100vh - 100px)'
                         width="100%"
                         theme="twilight"

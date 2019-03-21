@@ -32,7 +32,7 @@ class App extends Component {
   }
   adminLogin(e) {
     e.preventDefault()
-    this.props.adminLogin(this.state.usid,this.state.stats)
+    this.props.adminLogin(this.state.pass,this.state.stats)
   }
   render() {
     return (
@@ -43,6 +43,7 @@ class App extends Component {
             <div style={{ color: 'rgb(49, 231, 182)', textAlign: 'left' }}><span style={{ cursor: 'pointer' }} onClick={this.adminSwitch.bind(this)}>
               {this.state.admin ? 'User?' : 'Admin?'}
             </span></div>
+            <div className="frm">
             <TextField
               setState={(e) => this.setState(e)}
               usid={this.state.usid}
@@ -51,6 +52,7 @@ class App extends Component {
               login={this.state.login}
               pass={this.state.pass}
             />
+            </div>
 
             <div style={{ height: 20 }}>
               <span style={{ float: 'left', color: '#ef5350' }}>

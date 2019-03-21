@@ -19,8 +19,10 @@
     overflow: auto;
     position: absolute;
     display: block;
+    background: #1e1e1e;
 }
 #innerPanel{
     margin: 30px!important;
     position: relative;
+    
 }

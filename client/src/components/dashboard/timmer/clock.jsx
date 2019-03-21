@@ -45,18 +45,18 @@ class CircularIntegration extends React.Component {
     var animateClass = this.props.sec > 3 ? '' : this.props.done ? ' animated infinite pulse' : ' animated infinite tada'
 
     return (
-      <div className={classes.root} style={{ flexDirection: 'column' }}>
+      <div className={classes.root} style={{ flexDirection: 'column', display:'flex' }}>
         <div style={{ color: '#fff', fontWeight: 900, marginBottom: 10, fontSize: 30, height: 40 }}>
-          {this.props.notInit ? 'Please wait' : !this.props.done ? 'Wait for' : ''}
+          {!this.props.waitType ? 'Please wait' : !this.props.done ? 'Wait for' : ''}
         </div>
         <div style={{ margin: 'auto' }} className={classes.wrapper + animateClass}>
           <Fab style={{ height: 200, width: 200, backgroundColor: '#454545' }}>
             <div style={{ fontSize: 80, color: '#fff' }}>
-              {this.props.notInit ? '∞' : Math.floor(this.props.sec)}
+              {!this.props.waitType||this.props.waitType==='finished' ? '∞' : Math.floor(this.props.sec)}
             </div>
           </Fab>
           <CircularProgress
-            style={{ color: '#31e7b6' }}
+            style={{ color: this.props.waitType=='intrusion'?'#ef5350':'#31e7b6' }}
             size={210}
             className={classes.fabProgress}
             variant="static"
@@ -64,7 +64,9 @@ class CircularIntegration extends React.Component {
           />
         </div>
         <div style={{ color: '#fff', fontWeight: 900, marginTop: 10, fontSize: 30, height: 40 }}>
-          {this.props.notInit ? 'We are about to start.' : this.props.done ? 'Requesting question...' : 'Seconds'}
+          {!this.props.waitType ? 'We are about to start.' 
+          : this.props.waitType==='finished'?'Result is being generated.': this.props.done ? 'Requesting question...' 
+          : 'Seconds'}
         </div>
       </div>
     );

@@ -35,14 +35,14 @@ class AlertDialogSlide extends React.Component {
           aria-labelledby="alert-dialog-slide-title"
           aria-describedby="alert-dialog-slide-description"
         >
-            <div style={{background:'#31e7b6', width:480, maxWidth:'calc(100vw - 96px)'}}>
+            <div style={{background:this.props.waitType==='intrusion'?'#ef5350':'#31e7b6', width:480, maxWidth:'calc(100vw - 96px)'}}>
           <DialogTitle id="alert-dialog-slide-title" color="secondary">
-            <div style={{fontWeight:500,color:'#303030'}}>A New Message!
-                <div style={{fontSize:15,color:'#454545'}}>(from {this.props.messageFrom})</div>
+            <div style={{fontWeight:500,color:this.props.waitType==='intrusion'?'#fff':'#303030'}}>A New Message!
+                <div style={{fontSize:15,color:this.props.waitType==='intrusion'?'#e0e0e0':'#454545'}}>(from {this.props.messageFrom})</div>
             </div>
           </DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description" style={{color:'#454545'}}>
+            <DialogContentText id="alert-dialog-slide-description" style={{color:this.props.waitType==='intrusion'?'#fff':'#454545'}}>
               <pre style={{whiteSpace: 'pre-wrap'}}>
                 {this.props.message}
               </pre>
@@ -50,7 +50,7 @@ class AlertDialogSlide extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="secondary">
-              Close
+              <span style={{color:this.props.waitType==='intrusion'?'#fff':'#454545'}}>Close</span>
             </Button>
           </DialogActions>
           </div>

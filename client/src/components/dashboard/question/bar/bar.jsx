@@ -42,68 +42,73 @@ const styles = theme => ({
 });
 
 class ResponsiveDrawer extends React.Component {
-    state = {
-      anchorEl: null,
-    };
-  
-    handleDrawerToggle = () => {
-      this.setState(state => ({ mobileOpen: !state.mobileOpen }));
-    };
-    handleProfileMenuOpen = event => {
-      this.setState({ anchorEl: event.currentTarget });
-    };
-    handleMenuClose = () => {
-      this.setState({ anchorEl: null });
-    };
-    render() {
-        const { anchorEl } = this.state;
-        const renderMenu = (name)=>(
-            <Menu
-              anchorEl={anchorEl}
-              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-              open={Boolean(anchorEl)}
-              onClose={this.handleMenuClose}
-            >
-              <MenuItem>{name}</MenuItem>
-              <MenuItem onClick={this.handleMenuClose}>Logout</MenuItem>
-            </Menu>
-          );
-          const { classes } = this.props;
+  state = {
+    anchorEl: null,
+  };
 
-          return (
-            <div>
-            <AppBar  style={{color:'#fff',backgroundColor:'rgb(48, 48, 48)'}} position="fixed" className={!this.props.admin?classes.appBar:undefined}>
-              <Toolbar>
-                
-                <Typography variant="h4" color="inherit" noWrap style={{fontWeight:900, color:'#31e7b6'}}>
-                  Intruder
+  handleDrawerToggle = () => {
+    this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+  };
+  handleProfileMenuOpen = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+  handleMenuClose = () => {
+    this.setState({ anchorEl: null });
+  };
+  render() {
+    const { anchorEl } = this.state;
+    const renderMenu = (name) => (
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={Boolean(anchorEl)}
+        onClose={this.handleMenuClose}
+      >
+        <MenuItem>{name}</MenuItem>
+        <MenuItem onClick={this.props.logout}>Logout</MenuItem>
+      </Menu>
+    );
+    const { classes } = this.props;
+
+    return (
+      <div>
+        <AppBar style={{ color: '#fff', backgroundColor: 'rgb(48, 48, 48)' }} position="fixed" className={!this.props.admin ? classes.appBar : undefined}>
+          <Toolbar>
+
+            <Typography variant="h4" color="inherit" noWrap style={{ fontWeight: 900, color: '#31e7b6' }}>
+              Intruder
                 </Typography>
-                <div className={classes.grow} />
-                <IconButton
-                    aria-owns='material-appbar'
-                    aria-haspopup="true"
-                    onClick={this.handleProfileMenuOpen}
-                    color="inherit"
-                  >
-                    <AccountCircle />
-                  </IconButton>
-                  <Typography variant="subtitle1" color="inherit" noWrap onClick={this.handleProfileMenuOpen} style={{cursor:'pointer'}}>
-                  <span style={{color:'grey'}}>{this.props.user.username}</span>
-                </Typography>
-                <IconButton
-                  color="inherit"
-                  aria-label="Open drawer"
-                  onClick={this.props.onClick}
-                  className={classes.menuButton}
-                  anchor="right"
-                >
-                  <MenuIcon />
-                </IconButton>
-              </Toolbar>
-              {renderMenu(this.props.user.name)}
-            </AppBar>
-{/* 
+            <div className={classes.grow} />
+            {this.props.message ? <pre style={{ margin: 0, width: '40%', overflow: 'hidden' }}>
+              {this.props.message}
+              <span style={{ float: 'right' }}>-{this.props.messageFrom}</span>
+            </pre> : <span />}
+            <div className={classes.grow} />
+            <IconButton
+              aria-owns='material-appbar'
+              aria-haspopup="true"
+              onClick={this.handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <Typography variant="subtitle1" color="inherit" noWrap onClick={this.handleProfileMenuOpen} style={{ cursor: 'pointer' }}>
+              <span style={{ color: 'grey' }}>{this.props.user.username}</span>
+            </Typography>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={this.props.onClick}
+              className={classes.menuButton}
+              anchor="right"
+            >
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+          {renderMenu(this.props.user.name)}
+        </AppBar>
+        {/* 
             <AppBar position="fixed" color="primary" className={classes.appBar2}>
             <Toolbar>
                 <IconButton
@@ -133,16 +138,16 @@ class ResponsiveDrawer extends React.Component {
               </Toolbar>
               {renderMenu}
       </AppBar> */}
-            </div>
-            
-        );
-      }
-    }
-    
-    ResponsiveDrawer.propTypes = {
-      classes: PropTypes.object.isRequired,
-      container: PropTypes.object,
-      theme: PropTypes.object.isRequired,
-    };
-    
-    export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);
+      </div>
+
+    );
+  }
+}
+
+ResponsiveDrawer.propTypes = {
+  classes: PropTypes.object.isRequired,
+  container: PropTypes.object,
+  theme: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);

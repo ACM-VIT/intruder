@@ -16,6 +16,11 @@ function connectToUserSocket(jwt, dispatch) {
             socket.emit('join', jwt, (payload) => {
                 if (payload) {
                     dispatch({
+                        type: 'SEND_MESSAGE',
+                        message: Cookies.get('message'),
+                        messageFrom: Cookies.get('messageFrom')
+                    })
+                    dispatch({
                         type: 'SET_SOCKET',
                         payload: socket
                     })
@@ -49,6 +54,13 @@ function connectToAdminSocket(token, dispatch, isStats) {
                     dispatch({
                         type: 'SET_SOCKET',
                         payload: socket
+                    })
+                    dispatch({
+                        type: isStats ? 'STATS_LOGGED_IN' : 'ADMIN_LOGGED_IN',
+                        user: {
+                            username: isStats ? 'StatsListener' : 'Admin',
+                            name: isStats ? 'Stats Listener' : 'Admin'
+                        }
                     })
                     resolve(socket)
                 }
@@ -112,9 +124,6 @@ function adminLogin(token, isStats) {
         connectToAdminSocket(token, dispatch, isStats).then(() => {
             Cookies.set('adminToken', token)
             Cookies.set('type', isStats ? 'stats' : 'admin')
-            dispatch({
-                type: isStats ? 'STATS_LOGGED_IN' : 'ADMIN_LOGGED_IN'
-            })
             dispatch({ type: 'SET_LOCK', payload: false })
         }).catch(() => {
             dispatch({
@@ -130,9 +139,6 @@ function adminReLogin(dispatch, isStats) {
     var token = Cookies.get('adminToken')
     if (token) {
         connectToAdminSocket(token, dispatch, isStats).then(() => {
-            dispatch({
-                type: isStats ? 'STATS_LOGGED_IN' : 'ADMIN_LOGGED_IN'
-            })
         }).catch((e) => {
             console.log(e)
             dispatch({

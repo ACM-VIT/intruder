@@ -21,24 +21,35 @@ function setJwt() {
 
 
 
-function submitResponse(socket,res) {
+function submitResponse(socket, res) {
     return (dispatch) => {
         dispatch({ type: 'SET_LOCK', payload: true })
-        socket.emit('submit',res)
+        socket.emit('submit', res)
     }
 }
 
 
 
-function sendMsg(socket,res) {
+function sendMsg(socket, res) {
     return (dispatch) => {
         dispatch({ type: 'SET_LOCK', payload: true })
-        socket.emit('successMessage',res)
+        socket.emit('successMessage', res)
         dispatch({
-            type:'SET_SUCCESS_STATE',
-            payload:false
+            type: 'SET_SUCCESS_STATE',
+            payload: false
         })
     }
 }
 
-export {submitResponse, sendMsg, setJwt}
+function logout() {
+    Cookies.set('type', '')
+    Cookies.set('adminToken', '')
+    Cookies.set('userToken', '')
+    Cookies.set('message', '')
+    Cookies.set('messageFrom', '')
+    return ({
+        type: 'LOGOUT_USER',
+    })
+}
+
+export { submitResponse, sendMsg, setJwt, logout }

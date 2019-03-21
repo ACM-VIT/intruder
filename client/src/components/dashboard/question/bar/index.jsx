@@ -7,6 +7,7 @@ import Bar from './bar'
 import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import { logout } from '../../../../actions/userFunc'
 
 const drawerWidth = 370;
 
@@ -40,7 +41,7 @@ class ResponsiveDrawer extends React.Component {
     const { classes, theme } = this.props;
 
     const drawer = (
-      <div style={{ color: '#fff', background: 'rgb(48, 48, 48)' }}>
+      <div style={{ color: '#fff', background: 'rgb(48, 48, 48)', height:'100%' }}>
         <div style={{ margin: 20 }} >
           <h2 style={{ margin: 0, height: 40, color: '#31e7b6' }}>Rules</h2>
           <Divider />
@@ -61,7 +62,14 @@ class ResponsiveDrawer extends React.Component {
     );
     return (
       <div id={!this.props.admin ? "leftBar" : ''} className={classes.root} >
-        <Bar admin={this.props.admin} onClick={this.handleDrawerToggle} user={this.props.user} />
+        <Bar
+          message={this.props.message}
+          messageFrom={this.props.messageFrom}
+          admin={this.props.admin}
+          onClick={this.handleDrawerToggle}
+          user={this.props.user}
+          logout={this.props.logout}
+        />
         <nav className={classes.drawer} >
           <SwipeableDrawer
             open={this.state.mobileOpen}
@@ -89,7 +97,8 @@ ResponsiveDrawer.propTypes = {
 
 function mapStateToProps(state) {
   var { user } = state.appState
-  return ({ user })
+  var { message, messageFrom } = state.waitState
+  return ({ user, message, messageFrom })
 }
 
-export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(ResponsiveDrawer));
+export default connect(mapStateToProps, { logout })(withStyles(styles, { withTheme: true })(ResponsiveDrawer));

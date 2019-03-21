@@ -16,7 +16,7 @@ var initQuesStatus = {
 
 var initAppStatus = {
     loggedIn: null,
-    username: {},
+    user: { name: '', username: '' },
     socket: null,
     lock: false,
     success: false,
@@ -31,7 +31,9 @@ var initWaitStatus = {
     waitTime: 10,
     message: '',//''hello hello',
     messageFrom: '',//'shubham',
-    notInit: false
+    notInit: false,
+    waitType: null,
+    displayMsg: false
 }
 
 function userState(state = initUserStatus, action) {
@@ -61,7 +63,7 @@ function appState(state = initAppStatus, action) {
         case 'LOGOUT_USER':
             return initAppStatus
         case 'ADMIN_LOGGED_IN':
-            return { ...state, admin: true, loggedIn: true }
+            return { ...state, admin: true, loggedIn: true, user: action.user }
         case 'SET_LOGIN_ERROR':
             return { ...state, loginErr: action.payload }
         case 'SET_LOCK':
@@ -71,23 +73,25 @@ function appState(state = initAppStatus, action) {
         case 'SET_STATS_VALUE':
             return { ...state, statsConsoleVal: `${state.statsConsoleVal}\n${action.payload}\n` }
         case 'STATS_LOGGED_IN':
-            return { ...state, statsListen: true, loggedIn: true }
+            return { ...state, statsListen: true, loggedIn: true, user: action.user }
         default:
             return state
     }
 }
 
 function waitState(state = initWaitStatus, action) {
-    var { wait, waitTime, message, messageFrom, notInit } = action
+    var { wait, waitTime, message, messageFrom, waitType } = action
     switch (action.type) {
         case 'WAIT_STATUS':
             return { ...state, wait: action.payload, waitTime: 15 }
         case 'SUCCESS_WAIT':
             return { ...state, wait: true, waitTime: 0, message: '' }
+        case 'HIDE_MESSAGE':
+            return { ...state, displayMsg:false }
         case 'SEND_MESSAGE':
-            return { ...state, message: action.message, messageFrom: action.messageFrom }
+            return { ...state, message, messageFrom, displayMsg:true }
         case 'SET_WAIT':
-            return { ...state, message, messageFrom, wait, waitTime, notInit }
+            return { ...state, wait, waitTime, waitType}
         default:
             return state
     }

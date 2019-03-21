@@ -3,6 +3,9 @@ var maskRight=require('../resources/Asset_1.svg')
 
 var style = {
   height: '100vh', width: '100vw',
+  position:'absolute',
+  top:0,
+  left:0,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

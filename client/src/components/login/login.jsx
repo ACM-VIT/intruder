@@ -5,8 +5,11 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
     multilineColor:{
-        color:'rgb(49, 231, 182)',
+        color:'#fff',
     },
+    inputLabelProps:{
+        color:'rgb(49, 231, 182)',
+    }
 })
 
 function App(props){
@@ -27,35 +30,46 @@ function App(props){
                 }
             }}
         />:<span/>}
+        {!props.admin?
         <TextField
             value={props.usid}
             onChange={(e)=>props.setState({usid:e.target.value})}
             style={{width:'100%'}}
-            label={props.admin?"Admin ID":"Unique ID"}
+            label={"Username"}
             margin="normal"
             variant="outlined"
-            InputProps={{
+            InputLabelProps={{
                 classes: {
-                    input: props.classes.multilineColor,
+                    root: props.classes.inputLabelProps,
                 }
             }}
-        />
-        {
-        !props.admin?
-        <TextField
-            value={props.pass}
-            onChange={(e)=>props.setState({pass:e.target.value})}
-            label="Passcode"
-            type="password"
-            margin="normal"
-            variant="outlined"
-            style={{width:'100%'}}
             InputProps={{
                 classes: {
                     input: props.classes.multilineColor,
                 }
             }}
         />:<span/>}
+        
+        <TextField
+            inputProps={{autocomplete:"new-password"}}
+            value={props.pass}
+            onChange={(e)=>props.setState({pass:e.target.value})}
+            label={props.admin?"Admin ID":"Passcode"}
+            type="password"
+            margin="normal"
+            variant="outlined"
+            style={{width:'100%'}}
+            InputLabelProps={{
+                classes: {
+                    root: props.classes.inputLabelProps,
+                }
+            }}
+            InputProps={{
+                classes: {
+                    input: props.classes.multilineColor,
+                }
+            }}
+            />
         </div>
     )
 }
