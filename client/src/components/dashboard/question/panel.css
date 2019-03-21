@@ -1,0 +1,26 @@
+.pannelRight{
+    position: absolute;
+    width: 50%;
+    right: 0;
+    top:0
+}
+
+.pannelLeft{
+    position: absolute;
+    width: 50%;
+    left: 0;
+    top:0;
+}
+
+#panel{
+    min-height: calc(100vh - 64px);
+    top: 64px;
+    width: 100vw;
+    overflow: auto;
+    position: absolute;
+    display: block;
+}
+#innerPanel{
+    margin: 30px!important;
+    position: relative;
+}

@@ -39,7 +39,7 @@ class App extends React.Component {
           cursor="slim"
           mode="asciidoc"
           fontSize= {16}
-          height='200px'
+          style={{height:'calc(100vh - 272px)'}}
           width="100%"
           theme="twilight"
           value={this.props.value}

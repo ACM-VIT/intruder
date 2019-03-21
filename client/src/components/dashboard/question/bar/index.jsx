@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Bar from './bar'
 import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux'
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
 const drawerWidth = 370;
 
@@ -59,36 +60,21 @@ class ResponsiveDrawer extends React.Component {
       </div>
     );
     return (
-      <div id={!this.props.admin?"leftBar":''} className={classes.root} >
-        <Bar admin={this.props.admin} onClick={this.handleDrawerToggle} username={this.props.username} />
+      <div id={!this.props.admin ? "leftBar" : ''} className={classes.root} >
+        <Bar admin={this.props.admin} onClick={this.handleDrawerToggle} user={this.props.user} />
         <nav className={classes.drawer} >
-          <Hidden smUp implementation="css">
-            <Drawer
-              style={{ backgroundColor: 'rgb(48, 48, 48)' }}
-              container={this.props.container}
-              variant="temporary"
-              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-              open={this.state.mobileOpen}
-              onClose={this.handleDrawerToggle}
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-          {!this.props.admin ? <Hidden xsDown implementation="css">
-            <Drawer
-              anchor="right"
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-              variant="permanent"
-              open
-            >
-              {drawer}
-            </Drawer>
-          </Hidden> : <div />}
+          <SwipeableDrawer
+            open={this.state.mobileOpen}
+            onClose={this.handleDrawerToggle}
+            onOpen={this.handleDrawerToggle}
+            anchor="right"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            {drawer}
+          </SwipeableDrawer>
+
         </nav>
       </div>
     );
@@ -102,8 +88,8 @@ ResponsiveDrawer.propTypes = {
 };
 
 function mapStateToProps(state) {
-  var { username } = state.appState
-  return ({ username })
+  var { user } = state.appState
+  return ({ user })
 }
 
 export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(ResponsiveDrawer));

@@ -33,7 +33,7 @@ const styles = theme => ({
     },
   },
   menuButton: {
-    marginRight: 20,
+    marginLeft: 20,
     // [theme.breakpoints.up('sm')]: {
     //   display: 'none',
     // },
@@ -75,15 +75,7 @@ class ResponsiveDrawer extends React.Component {
             <div>
             <AppBar  style={{color:'#fff',backgroundColor:'rgb(48, 48, 48)'}} position="fixed" className={!this.props.admin?classes.appBar:undefined}>
               <Toolbar>
-                <IconButton
-                  color="inherit"
-                  aria-label="Open drawer"
-                  onClick={this.props.onClick}
-                  className={classes.menuButton}
-                  anchor="right"
-                >
-                  <MenuIcon />
-                </IconButton>
+                
                 <Typography variant="h4" color="inherit" noWrap style={{fontWeight:900, color:'#31e7b6'}}>
                   Intruder
                 </Typography>
@@ -99,6 +91,15 @@ class ResponsiveDrawer extends React.Component {
                   <Typography variant="subtitle1" color="inherit" noWrap onClick={this.handleProfileMenuOpen} style={{cursor:'pointer'}}>
                   <span style={{color:'grey'}}>{this.props.user.username}</span>
                 </Typography>
+                <IconButton
+                  color="inherit"
+                  aria-label="Open drawer"
+                  onClick={this.props.onClick}
+                  className={classes.menuButton}
+                  anchor="right"
+                >
+                  <MenuIcon />
+                </IconButton>
               </Toolbar>
               {renderMenu(this.props.user.name)}
             </AppBar>
