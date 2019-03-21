@@ -13,17 +13,20 @@ function connectToUserSocket(jwt, dispatch) {
             bindOn(socket, dispatch)
             window.soc = socket
             console.log('joining...')
-            socket.emit('join', jwt, (username) => {
-                if (username) {
+            socket.emit('join', jwt, (payload) => {
+                if (payload) {
                     dispatch({
                         type: 'SET_SOCKET',
                         payload: socket
                     })
                     dispatch({
                         type: 'LOGIN_SUCCESS',
-                        username: 'username'
+                        user: {
+                            username: payload.username,
+                            name: payload.name
+                        }
                     })
-                    resolve(socket, username)
+                    resolve()
                 }
                 else {
                     reject('invalid login')
@@ -37,10 +40,10 @@ function connectToAdminSocket(token, dispatch, isStats) {
     return new Promise((resolve, reject) => {
         let socket = io(baseURL);
         socket.on('connect', () => {
-            if(isStats) StatsBindOn(socket, dispatch);
+            if (isStats) StatsBindOn(socket, dispatch);
             window.soc = socket
             console.log('Adminjoining...')
-            socket.emit( isStats?'statsListenerLogin':'adminLogin', token, (success) => {
+            socket.emit(isStats ? 'statsListenerLogin' : 'adminLogin', token, (success) => {
                 console.log(success)
                 if (success) {
                     dispatch({
@@ -110,7 +113,7 @@ function adminLogin(token, isStats) {
             Cookies.set('adminToken', token)
             Cookies.set('type', isStats ? 'stats' : 'admin')
             dispatch({
-                type: isStats?'STATS_LOGGED_IN':'ADMIN_LOGGED_IN'
+                type: isStats ? 'STATS_LOGGED_IN' : 'ADMIN_LOGGED_IN'
             })
             dispatch({ type: 'SET_LOCK', payload: false })
         }).catch(() => {
@@ -128,7 +131,7 @@ function adminReLogin(dispatch, isStats) {
     if (token) {
         connectToAdminSocket(token, dispatch, isStats).then(() => {
             dispatch({
-                type: isStats?'STATS_LOGGED_IN':'ADMIN_LOGGED_IN'
+                type: isStats ? 'STATS_LOGGED_IN' : 'ADMIN_LOGGED_IN'
             })
         }).catch((e) => {
             console.log(e)
@@ -153,7 +156,7 @@ function reLogin() {
         else if (Cookies.get('type') === 'admin')
             adminReLogin(dispatch);
         else if (Cookies.get('type') === 'stats')
-            adminReLogin(dispatch,true);
+            adminReLogin(dispatch, true);
         else {
             console.log('loggg')
             dispatch({ type: 'LOGOUT_USER' })

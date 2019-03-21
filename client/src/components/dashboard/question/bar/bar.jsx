@@ -18,10 +18,10 @@ const styles = theme => ({
   },
   appBar: {
     marginLeft: drawerWidth,
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginRight: drawerWidth,
-    },
+    // [theme.breakpoints.up('sm')]: {
+    //   width: `calc(100% - ${drawerWidth}px)`,
+    //   marginRight: drawerWidth,
+    // },
   },
   appBar2: {
     top: 'auto',
@@ -34,9 +34,9 @@ const styles = theme => ({
   },
   menuButton: {
     marginRight: 20,
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
+    // [theme.breakpoints.up('sm')]: {
+    //   display: 'none',
+    // },
   },
   toolbar: theme.mixins.toolbar,
 });
@@ -57,7 +57,7 @@ class ResponsiveDrawer extends React.Component {
     };
     render() {
         const { anchorEl } = this.state;
-        const renderMenu = (
+        const renderMenu = (name)=>(
             <Menu
               anchorEl={anchorEl}
               anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -65,7 +65,7 @@ class ResponsiveDrawer extends React.Component {
               open={Boolean(anchorEl)}
               onClose={this.handleMenuClose}
             >
-              {/* <MenuItem>Shubham Awasthi</MenuItem> */}
+              <MenuItem>{name}</MenuItem>
               <MenuItem onClick={this.handleMenuClose}>Logout</MenuItem>
             </Menu>
           );
@@ -97,10 +97,10 @@ class ResponsiveDrawer extends React.Component {
                     <AccountCircle />
                   </IconButton>
                   <Typography variant="subtitle1" color="inherit" noWrap onClick={this.handleProfileMenuOpen} style={{cursor:'pointer'}}>
-                  <span style={{color:'grey'}}>{this.props.username}</span>
+                  <span style={{color:'grey'}}>{this.props.user.username}</span>
                 </Typography>
               </Toolbar>
-              {renderMenu}
+              {renderMenu(this.props.user.name)}
             </AppBar>
 {/* 
             <AppBar position="fixed" color="primary" className={classes.appBar2}>

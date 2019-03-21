@@ -16,7 +16,7 @@ var initQuesStatus = {
 
 var initAppStatus = {
     loggedIn: null,
-    username: 'mnj',
+    username: {},
     socket: null,
     lock: false,
     success: false,
@@ -55,7 +55,7 @@ function quesState(state = initQuesStatus, action) {
 function appState(state = initAppStatus, action) {
     switch (action.type) {
         case 'LOGIN_SUCCESS':
-            return { ...state, loggedIn: true, username: action.username }
+            return { ...state, loggedIn: true, user: action.user }
         case 'SET_SUCCESS_STATE':
             return { ...state, success: action.payload }
         case 'LOGOUT_USER':
