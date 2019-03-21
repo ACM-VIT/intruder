@@ -1,5 +1,4 @@
 import React from 'react';
-import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 
 class App extends React.Component {
@@ -8,7 +7,6 @@ class App extends React.Component {
         return(
             <div style={{display:'block'}}>
 
-                <Divider/>
                 <Typography color="textSecondary" style={{textAlign:'left',color:'#31e7b6',fontWeight:'bold'}}>
                     Resources<br/>
                 </Typography>

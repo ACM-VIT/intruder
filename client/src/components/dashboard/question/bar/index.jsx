@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Bar from './bar'
 import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux'
+import Avatar from '@material-ui/core/Avatar';
 
 const drawerWidth = 370;
 
@@ -39,27 +40,39 @@ class ResponsiveDrawer extends React.Component {
     const { classes, theme } = this.props;
 
     const drawer = (
-      <div style={{ color: '#fff', background: 'rgb(48, 48, 48)' }}>
+      <div style={{ color: '#fff', background: 'rgb(48, 48, 48)', marginBottom:0 }}>
         <div style={{ margin: 20 }} >
-          <h2 style={{ margin: 0, height: 40, color: '#31e7b6' }}>Rules</h2>
+          <div style={{ margin: 0, height: 40, color: '#31e7b6' }}></div>
           <Divider />
-          <div style={{ marginTop: 10, overflow: 'auto', lineHeight: 1.5 }}>
-            <ul>
-              {(() => {
-                let a = []
-                require('../../../../config.json').rules.forEach((element, i) => {
-                  a.push(<li key={i}>{element}</li>)
-                });
-                return a;
-              })()}
-              <li>iknjn</li>
-            </ul>
+          <div style={{ minHeight:'calc(100vh - 111px)',textAlign: 'center', marginTop: 30, lineHeight: 1.5 }}>
+            <Avatar src='https://api.adorable.io/avatars/285/shubham.png' style={{ height: 200, width: 200, margin: 'auto' }}>
+            </Avatar>
+            <h1 style={{}}>
+              Shubham Awasthi
+              <div style={{ fontSize: 15 }}>
+                @awasthishubh
+              </div>
+            </h1>
+            <Divider />
+            <div style={{ margin: '20px 0' }}>
+              <div style={{ textAlign: 'left' }}>Last Message:</div>
+              <pre style={{ whiteSpace: ' pre-wrap' }}>
+                Consectetur minim cillum sunt do mollit aliquip velit enim.
+              </pre>
+            </div>
+            <div>
+              {/* <div style={{ display:'inline-block', width:'10%', flex:1, textAlign: 'left' }}>From:</div> */}
+              <pre style={{ whiteSpace: ' pre-wrap', textAlign: 'right', flex: 1 }}>
+                -awasthishubh
+              </pre>
+            </div>
+
           </div>
         </div>
       </div>
     );
     return (
-      <div id={!this.props.admin?"leftBar":''} className={classes.root} >
+      <div id={!this.props.admin ? "leftBar" : ''} className={classes.root} >
         <Bar admin={this.props.admin} onClick={this.handleDrawerToggle} username={this.props.username} />
         <nav className={classes.drawer} >
           <Hidden smUp implementation="css">
