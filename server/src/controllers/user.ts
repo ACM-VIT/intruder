@@ -33,7 +33,7 @@ router.post('/enter', (req: Express.Request, res: Express.Response): any => {
     if (data !== null) {
       res.status(200).json({
         error: false,
-        data: { token: jwt.issueToken({ username }) },
+        data: { token: jwt.issueToken({ username, name }) },
       });
     }
   }).catch(() => res.status(500).json({
@@ -52,7 +52,7 @@ router.post('/login', (req: Express.Request, res: Express.Response): void => {
     });
     return null;
   }
-  User.findOne({ username, passcode }).then((data): void => {
+  User.findOne({ username, passcode }).then((data: any): void => {
     if (!data) {
       res.status(401).json({
         error: true,
@@ -62,7 +62,7 @@ router.post('/login', (req: Express.Request, res: Express.Response): void => {
     }
     res.status(200).json({
       error: false,
-      data: { token: jwt.issueToken({ username }) },
+      data: { token: jwt.issueToken({ username, name: data.name }) },
     });
     return null;
   }).catch(() => res.status(500).json({
