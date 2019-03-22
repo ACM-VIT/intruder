@@ -60,13 +60,6 @@ class Question {
       return null;
     }
     cb(false);
-    QuestionModel.update({ number: this.number }, {
-      $push: { attempts: attempt },
-    }).then(() => {
-      process.stdout.write('State saved successfully\n');
-    }).catch((err) => {
-      process.stderr.write(`Error saving state: ${err.message}\n`);
-    });
     this.attempts.push(attempt);
     return null;
   }
