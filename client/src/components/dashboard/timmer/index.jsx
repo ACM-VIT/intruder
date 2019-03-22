@@ -24,9 +24,9 @@ class App extends Component {
   render() {
     return (
       <Background username={this.props.user.username} logout={this.props.logout} title={
-        this.props.waitType == 'intrusion' ? <span style={{ color: '#ef5350' }}>Intrusion!</span>
-          : this.props.waitType == 'fail' ? <span style={{ fontSize: 50 }}>Submission Failed!</span>
-            : this.props.waitType == 'finished' ? <span style={{ fontSize: 50 }}>Finished!</span>
+        this.props.waitType === 'intrusion' ? <span style={{ color: '#ef5350' }}>Intrusion!</span>
+          : this.props.waitType === 'fail' ? <span style={{ fontSize: 50 }}>Submission Failed!</span>
+            : this.props.waitType === 'finished' ? <span style={{ fontSize: 50 }}>Finished!</span>
               : <span />
       } color="">
         {this.props.displayMsg ? <Dialogue
@@ -38,7 +38,7 @@ class App extends Component {
           waitType={this.props.waitType}
           totalSec={this.state.totalSec}
           sec={this.state.sec > 0 ? this.state.sec : 0}
-          done={this.state.done || this.props.waitType == 'finished'}
+          done={this.state.done || this.props.waitType === 'finished'}
         />
       </Background>
     );

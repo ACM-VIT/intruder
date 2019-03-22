@@ -43,7 +43,6 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state)
     return ({
         socket: state.appState.socket
     })

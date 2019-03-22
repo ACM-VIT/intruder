@@ -56,7 +56,7 @@ class CircularIntegration extends React.Component {
             </div>
           </Fab>
           <CircularProgress
-            style={{ color: this.props.waitType=='intrusion'?'#ef5350':'#31e7b6' }}
+            style={{ color: this.props.waitType==='intrusion'?'#ef5350':'#31e7b6' }}
             size={210}
             className={classes.fabProgress}
             variant="static"

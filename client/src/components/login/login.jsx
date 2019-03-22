@@ -67,7 +67,7 @@ function App(props){
             InputProps={{
                 classes: {
                     input: props.classes.multilineColor,
-                }
+                },
             }}
             />
         </div>
