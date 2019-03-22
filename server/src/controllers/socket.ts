@@ -188,7 +188,7 @@ const connectionFunc = (socket): void => {
       } else {
         socket.emit('criticalState');
       }
-      cb(true, { name: payload.name, username: payload.username });
+      cb({ name: payload.name, username: payload.username });
     } catch (err) {
       cb(false);
       socket.disconnect();
