@@ -23,13 +23,13 @@ class Question {
 
   public score: number = -1;
 
-  public constructor(cb: (b: boolean) => void) {
+  public constructor(cb: (b: boolean, q?: any) => void) {
     QuestionModel.findOne({ number: Question.num + 1 as number }).then((que: any) => {
       this.content = que.content;
       this.number = que.number;
       this.solution = que.solution;
       this.score = que.score;
-      cb(true);
+      cb(true, que);
     }).catch((err) => {
       this.error = err.message;
       cb(false);
@@ -93,11 +93,12 @@ class QuestionGetter {
 function fetch(notify: () => void): void {
   let totalCount: number = -1;
   let count = -1;
-  const cb = (bool: boolean): void => {
+  const cb = (bool: boolean, que?: any): void => {
     if (!bool) {
       process.stderr.write('Error fetching question\n');
       process.exit(1);
     }
+    console.log(que)
     count += 1;
     if (count === totalCount) {
       notify();
