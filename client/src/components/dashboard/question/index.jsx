@@ -8,7 +8,7 @@ require('./style.css')
 class App extends React.Component {
     render(){
         return (
-            <div className="animated fadeIn" style={{position:'absolute',display:'flex',flex:1, height:'100vh',width:'100vw'}}>
+            <div className="animated fadeIn" style={{position:'absolute',left:'1', height:'100vh',width:'100%'}}>
                 <Panel/>
                 <SideBar/>
             </div>

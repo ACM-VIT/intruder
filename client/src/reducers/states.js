@@ -11,7 +11,8 @@ var initQuesStatus = {
     audio: '',
     video: '',
     // txt: 'kmkmk',
-    cipher: true,
+    cipher: false,
+    code: '// Clear this and type your answer here...'
 }
 
 var initAppStatus = {
@@ -49,6 +50,10 @@ function quesState(state = initQuesStatus, action) {
     switch (action.type) {
         case 'SET_QUESTION':
             return { ...state, ...action.payload }
+        case 'UPDATE_CODE':
+            return { ...state, code: action.payload }
+        case 'CLEAR_CODE':
+            return { ...state, code: '// Clear this and type your answer here...' }
         default:
             return state
     }
@@ -87,11 +92,11 @@ function waitState(state = initWaitStatus, action) {
         case 'SUCCESS_WAIT':
             return { ...state, wait: true, waitTime: 0, message: '' }
         case 'HIDE_MESSAGE':
-            return { ...state, displayMsg:false }
+            return { ...state, displayMsg: false }
         case 'SEND_MESSAGE':
-            return { ...state, message, messageFrom, displayMsg:true }
+            return { ...state, message, messageFrom, displayMsg: true }
         case 'SET_WAIT':
-            return { ...state, wait, waitTime, waitType}
+            return { ...state, wait, waitTime, waitType }
         default:
             return state
     }

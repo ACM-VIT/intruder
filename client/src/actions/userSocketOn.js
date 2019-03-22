@@ -38,10 +38,31 @@ export default function bindOn(socket, dispatch) {
         })
     })
 
+    socket.on('notInitialized',function () {
+        console.log('%ccriticalState', 'background: #222; color: #bada55');
+        Cookies.set('message', 'It\'s about to start! Please wait for a few moments.')
+        Cookies.set('messageFrom', 'admin')
+        dispatch({
+            type: 'SEND_MESSAGE',
+            message: 'It\'s about to start! Please wait for a few moments.',
+            messageFrom: 'admin'
+        })
+        dispatch({
+            type: 'SET_WAIT',
+            wait: true,
+            waitTime: 0,
+            message: 'It\'s about to start! Please wait for a few moments.',
+            messageFrom: 'admin',
+            waitType: null
+        })
+    })
+
     socket.on('question', function (data) {
         console.log('%cquestion', 'background: #222; color: #bada55');
         var { img, audio, video, cipher, statement } = data.content
         console.log('question', data)
+        dispatch({ type: 'SET_SUCCESS_STATE', payload: false })
+        dispatch({ type: 'CLEAR_CODE'})
         dispatch({ type: 'SET_LOCK', payload: false })
         dispatch({ type: 'SET_WAIT', wait: false }) ///
         dispatch({
@@ -54,8 +75,7 @@ export default function bindOn(socket, dispatch) {
         })
     })
 
-    socket.on('success', function (username, finished) {
-        alert(finished)
+    socket.on('success', function (payload) {
         console.log('%csuccess', 'background: #222; color: #bada55');
         dispatch({ type: 'SET_QUESTION', payload: {} })
         dispatch({ type: 'HIDE_MESSAGE' })
@@ -65,9 +85,8 @@ export default function bindOn(socket, dispatch) {
             waitTime: 10,
             waitType: 'intrusion'
         })
-        if (finished) {
+        if (payload.finished) {
             setTimeout(() => {
-                alert()
                 dispatch({ type: 'HIDE_MESSAGE' })
                 dispatch({
                     type: 'SET_WAIT',

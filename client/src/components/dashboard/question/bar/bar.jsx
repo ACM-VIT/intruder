@@ -80,7 +80,7 @@ class ResponsiveDrawer extends React.Component {
               Intruder
                 </Typography>
             <div className={classes.grow} />
-            {this.props.message ? <pre style={{ margin: 0, width: '40%', overflow: 'hidden' }}>
+            {this.props.message ? <pre className="prehide" style={{ margin: 0, width: '40%', overflow: 'hidden' }}>
               {this.props.message}
               <span style={{ float: 'right' }}>-{this.props.messageFrom}</span>
             </pre> : <span />}

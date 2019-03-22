@@ -52,4 +52,11 @@ function logout() {
     })
 }
 
-export { submitResponse, sendMsg, setJwt, logout }
+function updateCode(code) {
+    return ({
+        type: 'UPDATE_CODE',
+        payload: code
+    })
+}
+
+export { submitResponse, sendMsg, setJwt, logout, updateCode }

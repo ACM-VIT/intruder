@@ -60,7 +60,7 @@ class CircularIntegration extends React.Component {
             size={210}
             className={classes.fabProgress}
             variant="static"
-            value={this.props.sec * 100 / this.props.totalSec}
+            value={this.props.done?0:this.props.sec * 100 / this.props.totalSec}
           />
         </div>
         <div style={{ color: '#fff', fontWeight: 900, marginTop: 10, fontSize: 30, height: 40 }}>

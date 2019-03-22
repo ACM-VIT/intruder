@@ -24,6 +24,7 @@ export default function(props){
             </div>
             {props.children}
             <div style={{ display: 'flex', flex: 1 }}></div>
+    {props.logout?<div style={{position:'absolute',bottom:0,right:0, color:'rgb(49, 231, 182)', cursor:'pointer'}} onClick={props.logout}>Logout({props.username})?</div>:<div/>}
         </div>
     )
 }

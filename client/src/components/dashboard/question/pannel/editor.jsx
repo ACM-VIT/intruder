@@ -36,15 +36,16 @@ class App extends React.Component {
     render() {
       return (
         <AceEditor
+          className="editor"
           cursor="slim"
           mode="asciidoc"
-          fontSize= {16}
-          style={{height:'calc(100vh - 161px)'}}
+          fontSize= {20}
+          // style={{height:'calc(100vh - 161px)'}}
           width="100%"
           theme="twilight"
           value={this.props.value}
           onChange={this.onChange.bind(this)}
-          name="UNIQUE_ID_OF_DIV"
+          name="editor"
           editorProps={{$blockScrolling: true}}
           onLoad={(editor) => {
             editor.getSession().setUseWrapMode(true);

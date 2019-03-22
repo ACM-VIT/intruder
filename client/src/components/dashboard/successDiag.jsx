@@ -20,9 +20,20 @@ const theme = createMuiTheme({
 export default class FormDialog extends React.Component {
   state = {
     open: this.props.open,
-    value:''
+    value:'',
+    sec:5
   };
-  submit(){
+  componentDidMount(){
+    var cn=setInterval(()=>{
+      this.setState({sec:this.state.sec-1})
+    },1000)
+    setTimeout(()=>{
+      clearInterval(cn)
+    },5000)
+  }
+  
+  submit(e){
+    e.preventDefault()
     this.props.sendMsg(this.props.socket, this.state.value)
   }
  
@@ -34,13 +45,13 @@ export default class FormDialog extends React.Component {
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-        <div style={{background:'#31e7b6', width:480, maxWidth:'calc(100vw - 96px)'}}>
+        <form onSubmit={this.submit.bind(this)} style={{background:'#31e7b6', width:480, maxWidth:'calc(100vw - 96px)'}}>
           <DialogTitle id="form-dialog-title">
             <span style={{color:'#303030',fontWeight:600}}>Success</span>
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Send a message to everyone.
+              Send a message to everyone. (in {this.state.sec}{this.state.sec>1?'secs':'sec'})
             </DialogContentText>
             <MuiThemeProvider theme = { theme }>
             <TextField
@@ -50,17 +61,16 @@ export default class FormDialog extends React.Component {
                 margin="dense"
                 id="name"
                 label="Message"
-                type="email"
                 fullWidth
             />
             </MuiThemeProvider>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.submit.bind(this)} color="secondary">
+            <Button type="submit" color="secondary">
               Submit
             </Button>
           </DialogActions>
-          </div>
+          </form>
         </Dialog>
       </div>
     );

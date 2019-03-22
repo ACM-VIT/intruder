@@ -59,9 +59,8 @@ class App extends Component {
                 {this.props.loginErr ? this.props.loginErr !== true ? this.props.loginErr : 'Invalid login credentials!' : ''}
               </span>
               <span style={{ float: 'right', cursor: 'pointer', color: 'rgb(49, 231, 182)' }} onClick={this.loginState.bind(this)}>
-                {this.state.admin ? <span><Switch
+                {this.state.admin ? <span onClick={this.statsSwitch.bind(this)}><Switch
                   checked={this.state.stats}
-                  onChange={this.statsSwitch.bind(this)}
                   style={{height:30}}
                   value="checkedB"
                   color="primary"
