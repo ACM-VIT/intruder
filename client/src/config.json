@@ -1,8 +1,9 @@
 {
     "rules":[
-        "Laboris nisi consectetur commodo deserunt aute esse Lorem laboris id cillum. Deserunt voluptate velit eu in et. Ipsum dolor do magna sit.",
-        "Occaecat consequat reprehenderit tempor consectetur laboris sint est laboris laboris aliqua. Ipsum sit deserunt eiusmod excepteur fugiat labore eu deserunt officia do velit.",
-        "Laboris nisi consectetur commodo deserunt aute esse Lorem laboris id cillum. Deserunt voluptate velit eu in et. Ipsum dolor do magna sit.",
-        "Laboris nisi consectetur commodo deserunt aute esse Lorem laboris id cillum. Deserunt voluptate velit eu in et. Ipsum dolor do magna sit."
+        "The contest consists of 10 questions.  ",
+        "As a user answers a question correctly, there is a time intrusion for all the participants.",
+        "The participant who is able to create the most number of intrusions will be declared as the winner",
+        "Avoid log out of the site while the contest is going on.",
+        "ALL THE BEST!"
     ]
 }

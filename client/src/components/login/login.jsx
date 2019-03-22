@@ -24,6 +24,11 @@ function App(props){
             margin="normal"
             variant="outlined"
             style={{width:'100%'}}
+            InputLabelProps={{
+                classes: {
+                    root: props.classes.inputLabelProps,
+                }
+            }}
             InputProps={{
                 classes: {
                     input: props.classes.multilineColor,

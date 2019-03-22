@@ -56,7 +56,7 @@ class App extends Component {
 
             <div style={{ height: 20 }}>
               <span style={{ float: 'left', color: '#ef5350' }}>
-                {this.props.loginErr ? this.props.loginErr !== true ? this.props.loginErr : 'Invalid login credentials!' : ''}
+                {this.props.loginErr ? this.props.loginErr !== true ? this.props.loginErr : 'Invalid credentials!' : ''}
               </span>
               <span style={{ float: 'right', cursor: 'pointer', color: 'rgb(49, 231, 182)' }} onClick={this.loginState.bind(this)}>
                 {this.state.admin ? <span onClick={this.statsSwitch.bind(this)}><Switch
