@@ -19,7 +19,7 @@ class Question {
 
   public successfulAttempt: Attempt = null;
 
-  public solution: any = null;
+  private solution: any = null;
 
   public score: number = -1;
 
