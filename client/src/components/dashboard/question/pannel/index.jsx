@@ -42,7 +42,7 @@ class App extends React.Component {
 										Question</Typography>
 									<div style={{ margin: '40px', overflow: 'auto' }}>
 
-										<pre style={{ fontSize:18,margin: 0, whiteSpace: 'pre-wrap', color: '#fff', padding: '0px' }}>
+										<pre style={{ fontSize:18,margin: 0, textAlign:'justify' ,whiteSpace: 'pre-wrap', color: '#fff', padding: '0px' }}>
 											{this.props.ques}
 										</pre>
 									</div>

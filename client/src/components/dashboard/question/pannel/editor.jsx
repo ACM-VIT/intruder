@@ -4,7 +4,7 @@ import 'brace/mode/asciidoc.js';
 import 'brace/theme/twilight';
 
 var cipherFun=(e)=>{
-  return (e+10)%26
+  return 26-e-1
 }
 
 class App extends React.Component {

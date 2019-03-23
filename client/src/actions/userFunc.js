@@ -55,6 +55,13 @@ function sendMsg(socket, res) {
             type: 'SET_SUCCESS_STATE',
             payload: false
         })
+        Cookies.set('message', res)
+        Cookies.set('messageFrom', 'You')
+        dispatch({
+            type: 'SEND_MESSAGE',
+            message: res,
+            messageFrom: 'You'
+        })
     }
 }
 
