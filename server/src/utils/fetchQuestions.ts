@@ -6,6 +6,20 @@ export interface Attempt {
   solution: any;
 }
 
+export interface QuestionFlag {
+  error: string;
+
+  content: any;
+
+  number: number;
+
+  attempts: Attempt[];
+
+  successfulAttempt: Attempt;
+
+  score: number;
+}
+
 class Question {
   private static num: number = 0;
 

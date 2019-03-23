@@ -3,6 +3,7 @@ import {
   fetch,
   QuestionGetter,
   Question,
+  QuestionFlag,
   Attempt,
 } from '../utils/fetchQuestions';
 import * as jwt from '../utils/jwt';
@@ -41,11 +42,19 @@ const setCriticalStateTimer = (): void => {
     prevScorerMessage = null;
     criticalState = false;
     gotMessage = false;
+    const que = {
+      error: currentQuestion.error,
+      content: currentQuestion.content,
+      number: currentQuestion.number,
+      attempts: currentQuestion.attempts,
+      successfulAttempt: currentQuestion.successfulAttempt,
+      score: currentQuestion.score,
+    } as QuestionFlag;
     const socket = io.sockets.connected[prevScorerSocket];
     if (!socket) {
-      io.emit('question', currentQuestion);
+      io.emit('question', que);
     } else {
-      socket.broadcast.emit('question', currentQuestion);
+      socket.broadcast.emit('question', que);
     }
   }, 5000);
 };
@@ -67,7 +76,15 @@ const setSuccessMessageTimer = (): void => {
       message: prevScorerMessage,
     });
     if (currentQuestion !== null) {
-      io.to(prevScorerSocket).emit('question', currentQuestion);
+      const que = {
+        error: currentQuestion.error,
+        content: currentQuestion.content,
+        number: currentQuestion.number,
+        attempts: currentQuestion.attempts,
+        successfulAttempt: currentQuestion.successfulAttempt,
+        score: currentQuestion.score,
+      } as QuestionFlag;
+      io.to(prevScorerSocket).emit('question', que);
       setCriticalStateTimer();
     }
   }, 7000);
@@ -141,7 +158,15 @@ const connectionFunc = (socket): void => {
     if (questionsFetched && socket.id === adminId && !initialized) {
       currentQuestion = QuestionGetter.get();
       console.log(currentQuestion);
-      io.emit('question', currentQuestion);
+      const que = {
+        error: currentQuestion.error,
+        content: currentQuestion.content,
+        number: currentQuestion.number,
+        attempts: currentQuestion.attempts,
+        successfulAttempt: currentQuestion.successfulAttempt,
+        score: currentQuestion.score,
+      } as QuestionFlag;
+      io.emit('question', que);
       initialized = true;
       cb(true);
       io.to(statsId).emit('initialized');
@@ -186,7 +211,15 @@ const connectionFunc = (socket): void => {
       }
       if (currentQuestion !== null && socket.connected
         && (!criticalState || prevScorer === payload.username)) {
-        socket.emit('question', currentQuestion);
+          const que = {
+            error: currentQuestion.error,
+            content: currentQuestion.content,
+            number: currentQuestion.number,
+            attempts: currentQuestion.attempts,
+            successfulAttempt: currentQuestion.successfulAttempt,
+            score: currentQuestion.score,
+          } as QuestionFlag;
+        socket.emit('question', que);
       } else {
         socket.emit('criticalState');
       }
@@ -234,7 +267,15 @@ const connectionFunc = (socket): void => {
     socket.broadcast.emit('successMessage', { username: prevScorer, message });
     io.to(statsId).emit('intruderMessage', { useranme: prevScorer, message });
     if (currentQuestion !== null) {
-      socket.emit('question', currentQuestion);
+      const que = {
+        error: currentQuestion.error,
+        content: currentQuestion.content,
+        number: currentQuestion.number,
+        attempts: currentQuestion.attempts,
+        successfulAttempt: currentQuestion.successfulAttempt,
+        score: currentQuestion.score,
+      } as QuestionFlag;
+      socket.emit('question', que);
       setCriticalStateTimer();
     } else {
       setTimeout(() => {
