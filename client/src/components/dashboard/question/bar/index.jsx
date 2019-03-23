@@ -52,7 +52,6 @@ class ResponsiveDrawer extends React.Component {
                 });
                 return a;
               })()}
-              <li>iknjn</li>
             </ul>
           </div>
         </div>

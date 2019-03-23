@@ -60,7 +60,6 @@ export default function bindOn(socket, dispatch) {
     socket.on('question', function (data) {
         console.log('%cquestion', 'background: #222; color: #bada55');
         var { img, audio, video, cipher, statement } = data.content
-        console.log('question', data)
         dispatch({ type: 'SET_SUCCESS_STATE', payload: false })
         dispatch({ type: 'CLEAR_CODE'})
         dispatch({ type: 'SET_LOCK', payload: false })

@@ -15,7 +15,7 @@ class App extends React.Component {
       }
     }
     onChange(newValue, e) {
-      if(this.props.lock) return this.props.onChange(this.props.value)
+      // if(this.props.lock) return this.props.onChange(this.props.value)
       if(!this.props.cipher || newValue===this.props.value.slice(0,-1))
         return this.props.onChange(newValue)
 

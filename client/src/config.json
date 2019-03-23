@@ -2,6 +2,7 @@
     "rules":[
         "The contest consists of 10 questions.  ",
         "As a user answers a question correctly, there is a time intrusion for all the participants.",
+        "The one who submit the right answer first, will get a chance to give a messafe to others.",
         "The participant who is able to create the most number of intrusions will be declared as the winner",
         "Avoid log out of the site while the contest is going on.",
         "ALL THE BEST!"

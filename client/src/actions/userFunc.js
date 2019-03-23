@@ -24,7 +24,24 @@ function setJwt() {
 function submitResponse(socket, res) {
     return (dispatch) => {
         dispatch({ type: 'SET_LOCK', payload: true })
-        socket.emit('submit', res)
+        if (res)
+            socket.emit('submit', res)
+        else {
+            dispatch({ type: 'SET_LOCK', payload: false })
+            dispatch({ type: 'HIDE_MESSAGE' })
+            dispatch({
+                type: 'SET_WAIT',
+                wait: true,
+                waitTime: 3,
+                waitType: 'fail'
+            })
+            setTimeout(() => {
+                dispatch({
+                    type: 'SET_WAIT',
+                    wait: false
+                })
+            }, 3000)
+        }
     }
 }
 

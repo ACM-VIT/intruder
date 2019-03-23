@@ -25,7 +25,7 @@ class App extends Component {
     return (
       <Background username={this.props.user.username} logout={this.props.logout} title={
         this.props.waitType === 'intrusion' ? <span style={{ color: '#ef5350' }}>Intrusion!</span>
-          : this.props.waitType === 'fail' ? <span style={{ fontSize: 50 }}>Wrong Failed!</span>
+          : this.props.waitType === 'fail' ? <span style={{ fontSize: 50 }}>Wrong Submission!</span>
             : this.props.waitType === 'finished' ? <span style={{ fontSize: 50 }}>Finished!</span>
               : <span />
       } color="">
