@@ -175,6 +175,7 @@ const connectionFunc = (socket): void => {
     let payload: any;
     try {
       payload = jwt.verify(token);
+      console.log(payload.userrname + " tried joining");
       users[socket.id as string] = payload.username;
       if ((prevScorer === payload.username) && socket.connected && !gotMessage) {
         prevScorerSocket = socket.id;
@@ -196,6 +197,7 @@ const connectionFunc = (socket): void => {
     }
   });
   socket.on('submit', (solution): void => {
+    console.log(users[socket.id] + " Submitted: " + solution);
     if (criticalState) {
       return null;
     }
